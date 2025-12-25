@@ -233,3 +233,73 @@ def is_super_effective(move_type, defending_pokemon_types):
 def is_not_very_effective(move_type, defending_pokemon_types):
     multiplier = type_effectiveness_modifier(move_type, defending_pokemon_types)
     return multiplier < 1
+
+
+def is_doubles_format(format_name):
+    """
+    Determine if a format is a doubles battle format.
+    
+    Args:
+        format_name: The Pokemon Showdown format name (e.g., "gen9vgc2024", "gen9ou")
+        
+    Returns:
+        True if the format is doubles, False otherwise
+    """
+    if not format_name:
+        return False
+    
+    # Normalize the format name (lowercase)
+    format_normalized = normalize_name(format_name.lower())
+    
+    # Check if it's in the known doubles formats
+    return any(doubles_fmt in format_normalized for doubles_fmt in constants.DOUBLES_FORMATS)
+
+
+def parse_position_from_protocol_identifier(identifier):
+    """
+    Parse the position from a Pokemon Showdown protocol identifier.
+    
+    Args:
+        identifier: Protocol identifier like "p1a: Pikachu" or "p2b: Charizard"
+        
+    Returns:
+        tuple: (player, position) where player is "p1" or "p2" and position is 0 or 1
+        
+    Examples:
+        "p1a: Pikachu" -> ("p1", 0)
+        "p1b: Charizard" -> ("p1", 1)
+        "p2a: Mewtwo" -> ("p2", 0)
+        "p2b: Rayquaza" -> ("p2", 1)
+    """
+    # Extract just the identifier part (e.g., "p1a" from "p1a: Pikachu")
+    if ":" in identifier:
+        identifier = identifier.split(":")[0].strip()
+    
+    # Singles format: "p1" or "p2" (no position letter)
+    if len(identifier) == 2 and identifier.startswith("p"):
+        return identifier, 0
+    
+    # Doubles format: "p1a", "p1b", "p2a", "p2b"
+    if len(identifier) >= 3 and identifier.startswith("p"):
+        player = identifier[:2]  # "p1" or "p2"
+        position_char = identifier[2]  # "a" or "b"
+        position = 0 if position_char == "a" else 1
+        return player, position
+    
+    # Fallback for unknown format
+    return identifier[:2] if len(identifier) >= 2 else "p1", 0
+
+
+def format_position_identifier(player, position):
+    """
+    Format a position identifier for Pokemon Showdown protocol.
+    
+    Args:
+        player: "p1" or "p2"
+        position: 0 for left, 1 for right
+        
+    Returns:
+        Formatted identifier like "p1a" or "p2b"
+    """
+    position_char = constants.POSITION_CHARS[position] if position < len(constants.POSITION_CHARS) else "a"
+    return f"{player}{position_char}"

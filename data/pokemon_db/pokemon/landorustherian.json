@@ -1,0 +1,297 @@
+{
+  "id": 10021,
+  "name": "landorustherian",
+  "display_name": "Landorus Therian",
+  "types": [
+    "Ground",
+    "Flying"
+  ],
+  "base_stats": {
+    "hp": 89,
+    "atk": 145,
+    "def": 90,
+    "spa": 105,
+    "spd": 80,
+    "spe": 91
+  },
+  "abilities": [
+    "Intimidate"
+  ],
+  "hidden_ability": null,
+  "height": 13,
+  "weight": 680,
+  "moves": [
+    {
+      "name": "Swords Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fly",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Leer",
+      "learn_method": "level-up",
+      "level": 5
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earthquake",
+      "learn_method": "level-up",
+      "level": 65
+    },
+    {
+      "name": "Fissure",
+      "learn_method": "level-up",
+      "level": 75
+    },
+    {
+      "name": "Dig",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Slide",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sludge Bomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Slap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Outrage",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Sandstorm",
+      "learn_method": "level-up",
+      "level": 60
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Crunch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Brick Break",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Imprison",
+      "learn_method": "level-up",
+      "level": 30
+    },
+    {
+      "name": "Weather Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Tomb",
+      "learn_method": "level-up",
+      "level": 20
+    },
+    {
+      "name": "Extrasensory",
+      "learn_method": "level-up",
+      "level": 45
+    },
+    {
+      "name": "Sand Tomb",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Block",
+      "learn_method": "level-up",
+      "level": 10
+    },
+    {
+      "name": "Bulk Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Shot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Gravity",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hammer Arm",
+      "learn_method": "level-up",
+      "level": 55
+    },
+    {
+      "name": "U Turn",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fling",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earth Power",
+      "learn_method": "level-up",
+      "level": 40
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stone Edge",
+      "learn_method": "level-up",
+      "level": 50
+    },
+    {
+      "name": "Stealth Rock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grass Knot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Smack Down",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Sludge Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bulldoze",
+      "learn_method": "level-up",
+      "level": 15
+    },
+    {
+      "name": "Stomping Tantrum",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scorching Sands",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sandsear Storm",
+      "learn_method": "level-up",
+      "level": 80
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10021.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10021.png"
+}

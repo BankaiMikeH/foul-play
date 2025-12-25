@@ -1,0 +1,236 @@
+{
+  "comment": "VGC 2026 Regulation F Pokemon Database - Common competitive Pokemon",
+  "pokemon": {
+    "miraidon": {
+      "name": "Miraidon",
+      "types": ["Electric", "Dragon"],
+      "base_stats": {"hp": 100, "atk": 85, "def": 100, "spa": 135, "spd": 115, "spe": 135},
+      "abilities": ["Hadron Engine"],
+      "common_moves": ["Electro Drift", "Draco Meteor", "Volt Switch", "Protect", "Thunderbolt", "Overheat"],
+      "common_items": ["Life Orb", "Choice Specs", "Assault Vest"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 4, "spa": 252, "spe": 252}, "nature": "Timid"},
+        "bulky": {"evs": {"hp": 252, "spa": 252, "spe": 4}, "nature": "Modest"}
+      },
+      "tier": "Restricted",
+      "usage_rate": 0.65,
+      "viability_rank": "S+"
+    },
+    
+    "koraidon": {
+      "name": "Koraidon",
+      "types": ["Fighting", "Dragon"],
+      "base_stats": {"hp": 100, "atk": 135, "def": 115, "spa": 85, "spd": 100, "spe": 135},
+      "abilities": ["Orichalcum Pulse"],
+      "common_moves": ["Collision Course", "Dragon Claw", "Flame Charge", "Protect", "Low Kick"],
+      "common_items": ["Clear Amulet", "Assault Vest", "Choice Band"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 4, "atk": 252, "spe": 252}, "nature": "Jolly"},
+        "bulky": {"evs": {"hp": 252, "atk": 252, "spe": 4}, "nature": "Adamant"}
+      },
+      "tier": "Restricted",
+      "usage_rate": 0.45,
+      "viability_rank": "S"
+    },
+    
+    "calyrex-shadow": {
+      "name": "Calyrex-Shadow",
+      "types": ["Psychic", "Ghost"],
+      "base_stats": {"hp": 100, "atk": 85, "def": 80, "spa": 165, "spd": 100, "spe": 150},
+      "abilities": ["As One (Spectrier)"],
+      "common_moves": ["Astral Barrage", "Psyshock", "Protect", "Pollen Puff", "Draining Kiss"],
+      "common_items": ["Focus Sash", "Life Orb", "Choice Scarf"],
+      "common_spreads": {
+        "fast": {"evs": {"hp": 4, "spa": 252, "spe": 252}, "nature": "Timid"},
+        "bulky": {"evs": {"hp": 252, "spa": 252, "spe": 4}, "nature": "Modest"}
+      },
+      "tier": "Restricted",
+      "usage_rate": 0.35,
+      "viability_rank": "S"
+    },
+    
+    "flutter_mane": {
+      "name": "Flutter Mane",
+      "types": ["Ghost", "Fairy"],
+      "base_stats": {"hp": 55, "atk": 55, "def": 55, "spa": 135, "spd": 135, "spe": 135},
+      "abilities": ["Protosynthesis"],
+      "common_moves": ["Moonblast", "Shadow Ball", "Dazzling Gleam", "Protect", "Icy Wind", "Thunderbolt"],
+      "common_items": ["Booster Energy", "Life Orb", "Focus Sash"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 4, "spa": 252, "spe": 252}, "nature": "Timid"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.55,
+      "viability_rank": "S"
+    },
+    
+    "incineroar": {
+      "name": "Incineroar",
+      "types": ["Fire", "Dark"],
+      "base_stats": {"hp": 95, "atk": 115, "def": 90, "spa": 80, "spd": 90, "spe": 60},
+      "abilities": ["Intimidate", "Blaze"],
+      "common_moves": ["Fake Out", "Knock Off", "Flare Blitz", "Parting Shot", "Snarl", "Taunt"],
+      "common_items": ["Sitrus Berry", "Safety Goggles", "Assault Vest"],
+      "common_spreads": {
+        "defensive": {"evs": {"hp": 252, "atk": 4, "spd": 252}, "nature": "Careful"},
+        "offensive": {"evs": {"hp": 252, "atk": 252, "spe": 4}, "nature": "Adamant"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.70,
+      "viability_rank": "S+"
+    },
+    
+    "rillaboom": {
+      "name": "Rillaboom",
+      "types": ["Grass"],
+      "base_stats": {"hp": 100, "atk": 125, "def": 90, "spa": 60, "spd": 70, "spe": 85},
+      "abilities": ["Grassy Surge", "Overgrow"],
+      "common_moves": ["Fake Out", "Grassy Glide", "Wood Hammer", "U-turn", "High Horsepower", "Knock Off"],
+      "common_items": ["Assault Vest", "Miracle Seed", "Choice Band"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 252, "atk": 252, "spe": 4}, "nature": "Adamant"},
+        "bulky": {"evs": {"hp": 252, "atk": 252, "def": 4}, "nature": "Adamant"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.50,
+      "viability_rank": "S"
+    },
+    
+    "landorus-therian": {
+      "name": "Landorus-Therian",
+      "types": ["Ground", "Flying"],
+      "base_stats": {"hp": 89, "atk": 145, "def": 90, "spa": 105, "spd": 80, "spe": 91},
+      "abilities": ["Intimidate"],
+      "common_moves": ["Earthquake", "Rock Slide", "U-turn", "Stomping Tantrum", "Protect"],
+      "common_items": ["Choice Scarf", "Life Orb", "Assault Vest"],
+      "common_spreads": {
+        "scarf": {"evs": {"hp": 4, "atk": 252, "spe": 252}, "nature": "Jolly"},
+        "bulky": {"evs": {"hp": 252, "atk": 252, "spe": 4}, "nature": "Adamant"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.45,
+      "viability_rank": "S"
+    },
+    
+    "iron_hands": {
+      "name": "Iron Hands",
+      "types": ["Fighting", "Electric"],
+      "base_stats": {"hp": 154, "atk": 140, "def": 108, "spa": 50, "spd": 68, "spe": 50},
+      "abilities": ["Quark Drive"],
+      "common_moves": ["Fake Out", "Close Combat", "Wild Charge", "Heavy Slam", "Drain Punch"],
+      "common_items": ["Assault Vest", "Booster Energy", "Punching Glove"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 252, "atk": 252, "spe": 4}, "nature": "Adamant"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.40,
+      "viability_rank": "A+"
+    },
+    
+    "gholdengo": {
+      "name": "Gholdengo",
+      "types": ["Steel", "Ghost"],
+      "base_stats": {"hp": 87, "atk": 60, "def": 95, "spa": 133, "spd": 91, "spe": 84},
+      "abilities": ["Good as Gold"],
+      "common_moves": ["Make It Rain", "Shadow Ball", "Protect", "Nasty Plot", "Dazzling Gleam"],
+      "common_items": ["Leftovers", "Life Orb", "Air Balloon"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 252, "spa": 252, "spe": 4}, "nature": "Modest"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.35,
+      "viability_rank": "A+"
+    },
+    
+    "amoonguss": {
+      "name": "Amoonguss",
+      "types": ["Grass", "Poison"],
+      "base_stats": {"hp": 114, "atk": 85, "def": 70, "spa": 85, "spd": 80, "spe": 30},
+      "abilities": ["Regenerator", "Effect Spore"],
+      "common_moves": ["Spore", "Rage Powder", "Pollen Puff", "Sludge Bomb", "Protect"],
+      "common_items": ["Rocky Helmet", "Sitrus Berry", "Covert Cloak"],
+      "common_spreads": {
+        "defensive": {"evs": {"hp": 252, "def": 252, "spd": 4}, "nature": "Relaxed"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.30,
+      "viability_rank": "A"
+    },
+    
+    "tornadus": {
+      "name": "Tornadus",
+      "types": ["Flying"],
+      "base_stats": {"hp": 79, "atk": 115, "def": 70, "spa": 125, "spd": 80, "spe": 111},
+      "abilities": ["Prankster"],
+      "common_moves": ["Tailwind", "Bleakwind Storm", "Taunt", "Protect", "Icy Wind"],
+      "common_items": ["Focus Sash", "Covert Cloak", "Mental Herb"],
+      "common_spreads": {
+        "support": {"evs": {"hp": 252, "spa": 4, "spe": 252}, "nature": "Timid"}
+      },
+      "tier": "OU",
+      "usage_rate": 0.25,
+      "viability_rank": "A"
+    },
+    
+    "whimsicott": {
+      "name": "Whimsicott",
+      "types": ["Grass", "Fairy"],
+      "base_stats": {"hp": 60, "atk": 67, "def": 85, "spa": 77, "spd": 75, "spe": 116},
+      "abilities": ["Prankster"],
+      "common_moves": ["Tailwind", "Moonblast", "Encore", "Protect", "Beat Up"],
+      "common_items": ["Focus Sash", "Covert Cloak"],
+      "common_spreads": {
+        "support": {"evs": {"hp": 252, "spa": 4, "spe": 252}, "nature": "Timid"}
+      },
+      "tier": "A",
+      "usage_rate": 0.20,
+      "viability_rank": "A"
+    },
+    
+    "indeedee-f": {
+      "name": "Indeedee-F",
+      "types": ["Psychic", "Normal"],
+      "base_stats": {"hp": 70, "atk": 55, "def": 65, "spa": 95, "spd": 105, "spe": 85},
+      "abilities": ["Psychic Surge"],
+      "common_moves": ["Trick Room", "Psychic", "Helping Hand", "Follow Me", "Protect"],
+      "common_items": ["Mental Herb", "Psychic Seed", "Safety Goggles"],
+      "common_spreads": {
+        "defensive": {"evs": {"hp": 252, "def": 252, "spd": 4}, "nature": "Relaxed"}
+      },
+      "tier": "A",
+      "usage_rate": 0.18,
+      "viability_rank": "A-"
+    },
+    
+    "ursaluna": {
+      "name": "Ursaluna",
+      "types": ["Ground", "Normal"],
+      "base_stats": {"hp": 130, "atk": 140, "def": 105, "spa": 45, "spd": 80, "spe": 50},
+      "abilities": ["Guts"],
+      "common_moves": ["Headlong Rush", "Facade", "Protect", "Rock Slide", "Earthquake"],
+      "common_items": ["Flame Orb", "Assault Vest"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 252, "atk": 252, "def": 4}, "nature": "Brave"}
+      },
+      "tier": "A",
+      "usage_rate": 0.22,
+      "viability_rank": "A"
+    },
+    
+    "iron_bundle": {
+      "name": "Iron Bundle",
+      "types": ["Ice", "Water"],
+      "base_stats": {"hp": 56, "atk": 80, "def": 114, "spa": 124, "spd": 60, "spe": 136},
+      "abilities": ["Quark Drive"],
+      "common_moves": ["Freeze-Dry", "Hydro Pump", "Icy Wind", "Protect"],
+      "common_items": ["Booster Energy", "Focus Sash"],
+      "common_spreads": {
+        "offensive": {"evs": {"hp": 4, "spa": 252, "spe": 252}, "nature": "Timid"}
+      },
+      "tier": "A+",
+      "usage_rate": 0.28,
+      "viability_rank": "A+"
+    }
+  }
+}
+

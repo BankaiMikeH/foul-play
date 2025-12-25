@@ -1,0 +1,307 @@
+{
+  "id": 992,
+  "name": "ironhands",
+  "display_name": "Iron Hands",
+  "types": [
+    "Fighting",
+    "Electric"
+  ],
+  "base_stats": {
+    "hp": 154,
+    "atk": 140,
+    "def": 108,
+    "spa": 50,
+    "spd": 68,
+    "spe": 50
+  },
+  "abilities": [
+    "Quark Drive"
+  ],
+  "hidden_ability": null,
+  "height": 18,
+  "weight": 3807,
+  "moves": [
+    {
+      "name": "Fire Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ice Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder Punch",
+      "learn_method": "level-up",
+      "level": 21
+    },
+    {
+      "name": "Swords Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Whirlwind",
+      "learn_method": "level-up",
+      "level": 14
+    },
+    {
+      "name": "Slam",
+      "learn_method": "level-up",
+      "level": 28
+    },
+    {
+      "name": "Sand Attack",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Tackle",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Low Kick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Seismic Toss",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "Thunderbolt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earthquake",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Energy",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Metronome",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Slide",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reversal",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Belly Drum",
+      "learn_method": "level-up",
+      "level": 84
+    },
+    {
+      "name": "Detect",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fake Out",
+      "learn_method": "level-up",
+      "level": 7
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Punch",
+      "learn_method": "level-up",
+      "level": 91
+    },
+    {
+      "name": "Charge",
+      "learn_method": "level-up",
+      "level": 49
+    },
+    {
+      "name": "Brick Break",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Arm Thrust",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Rock Tomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Iron Defense",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Close Combat",
+      "learn_method": "level-up",
+      "level": 63
+    },
+    {
+      "name": "Fling",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Force Palm",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Drain Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Iron Head",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heavy Slam",
+      "learn_method": "level-up",
+      "level": 77
+    },
+    {
+      "name": "Low Sweep",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Volt Switch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bulldoze",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Wild Charge",
+      "learn_method": "level-up",
+      "level": 56
+    },
+    {
+      "name": "Play Rough",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Electric Terrain",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Stomping Tantrum",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Body Press",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hard Press",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Supercell Slam",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/992.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/992.png"
+}

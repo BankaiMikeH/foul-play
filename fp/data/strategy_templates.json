@@ -1,0 +1,157 @@
+{
+  "strategies": {
+    "trick_room": {
+      "name": "Trick Room",
+      "description": "Slow, bulky Pokemon with Trick Room setter",
+      "required_moves": ["Trick Room"],
+      "required_roles": ["SLOW_ATTACKER"],
+      "preferred_roles": ["WALL", "REDIRECTOR"],
+      "speed_range": [0, 70],
+      "min_bulk": 200,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Intimidate", "Regenerator"],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Indeedee-F", "Ursaluna"],
+        ["Amoonguss", "Iron Hands"]
+      ]
+    },
+    
+    "tailwind": {
+      "name": "Tailwind",
+      "description": "Fast offensive Pokemon with Tailwind support",
+      "required_moves": ["Tailwind"],
+      "required_roles": ["FAST_SWEEPER"],
+      "preferred_roles": ["INTIMIDATE", "SUPPORT"],
+      "speed_range": [100, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Prankster", "Intimidate"],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Tornadus", "Flutter Mane"],
+        ["Whimsicott", "Iron Bundle"]
+      ]
+    },
+    
+    "sun": {
+      "name": "Sun Team",
+      "description": "Sun weather team with Drought setter",
+      "required_moves": [],
+      "required_roles": ["WEATHER_SETTER"],
+      "preferred_roles": ["FAST_SWEEPER"],
+      "speed_range": [80, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Drought", "Chlorophyll"],
+      "avoid_abilities": ["Drizzle", "Sand Stream"],
+      "sample_cores": []
+    },
+    
+    "rain": {
+      "name": "Rain Team",
+      "description": "Rain weather team with Drizzle setter",
+      "required_moves": [],
+      "required_roles": ["WEATHER_SETTER"],
+      "preferred_roles": ["FAST_SWEEPER"],
+      "speed_range": [80, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Drizzle", "Swift Swim"],
+      "avoid_abilities": ["Drought", "Sand Stream"],
+      "sample_cores": []
+    },
+    
+    "grassy_terrain": {
+      "name": "Grassy Terrain",
+      "description": "Grassy Terrain team with Grassy Surge setter",
+      "required_moves": ["Grassy Glide"],
+      "required_roles": ["TERRAIN_SETTER"],
+      "preferred_roles": ["FAST_SWEEPER", "INTIMIDATE"],
+      "speed_range": [60, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Grassy Surge"],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Rillaboom", "Iron Hands"]
+      ]
+    },
+    
+    "hyper_offense": {
+      "name": "Hyper Offense",
+      "description": "Maximum offensive pressure with fast sweepers",
+      "required_moves": [],
+      "required_roles": ["FAST_SWEEPER"],
+      "preferred_roles": ["SETUP_SWEEPER"],
+      "speed_range": [110, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Protosynthesis", "Quark Drive"],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Flutter Mane", "Iron Bundle"],
+        ["Miraidon", "Calyrex-Shadow"]
+      ]
+    },
+    
+    "balanced": {
+      "name": "Balanced/Goodstuff",
+      "description": "Best Pokemon with good type coverage and speed control",
+      "required_moves": [],
+      "required_roles": [],
+      "preferred_roles": ["INTIMIDATE", "SPEED_CONTROL"],
+      "speed_range": [60, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Intimidate"],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Incineroar", "Landorus-Therian"],
+        ["Rillaboom", "Incineroar"]
+      ]
+    },
+    
+    "intimidate_stack": {
+      "name": "Intimidate Stack",
+      "description": "Multiple Intimidate users to weaken physical attackers",
+      "required_moves": [],
+      "required_roles": ["INTIMIDATE"],
+      "preferred_roles": ["PIVOT"],
+      "speed_range": [60, 255],
+      "min_bulk": 150,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": ["Intimidate"],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Incineroar", "Landorus-Therian"]
+      ]
+    },
+    
+    "follow_me_setup": {
+      "name": "Follow Me + Setup",
+      "description": "Redirector protects setup sweeper",
+      "required_moves": ["Follow Me", "Nasty Plot"],
+      "required_roles": ["REDIRECTOR", "SETUP_SWEEPER"],
+      "preferred_roles": ["FAST_SWEEPER"],
+      "speed_range": [60, 255],
+      "min_bulk": 0,
+      "core_size": 2,
+      "team_size": 6,
+      "priority_abilities": [],
+      "avoid_abilities": [],
+      "sample_cores": [
+        ["Amoonguss", "Gholdengo"]
+      ]
+    }
+  }
+}
+

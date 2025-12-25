@@ -21,6 +21,7 @@ from fp.search.poke_engine_helpers import poke_engine_get_damage_rolls
 from fp.helpers import normalize_name, type_effectiveness_modifier
 from fp.helpers import get_pokemon_info_from_condition
 from fp.helpers import calculate_stats
+from fp.team_utils import unpack_team
 from fp.helpers import (
     is_not_very_effective,
     is_super_effective,
@@ -30,6 +31,27 @@ from fp.battle import boost_multiplier_lookup
 
 
 logger = logging.getLogger(__name__)
+
+
+def parse_position_from_identifier(identifier: str) -> int:
+    """
+    Parse the position from a Pokemon Showdown identifier.
+    
+    Identifier format: "p1a: PokemonName" or "p2b: PokemonName"
+    - p1/p2 indicates player
+    - a/b indicates position (a=0/left, b=1/right in doubles)
+    
+    For singles, always returns 0 (no position indicator or 'a').
+    """
+    # Extract position letter from identifier (e.g., "p1a:" or "p2b:")
+    if ':' in identifier:
+        prefix = identifier.split(':')[0]  # "p1a" or "p2b"
+        if len(prefix) >= 3:
+            position_letter = prefix[2].lower()  # 'a' or 'b'
+            if position_letter == 'b':
+                return 1
+    return 0  # Default to position 0 (left) for singles or position 'a'
+
 
 MOVE_END_STRINGS = {"move", "switch", "upkeep", "-miss", ""}
 ITEMS_REVEALED_ON_SWITCH_IN = [
@@ -184,6 +206,36 @@ def is_opponent(battle, split_msg):
     return not split_msg[2].startswith(battle.user.name)
 
 
+def parse_position_from_identifier(identifier):
+    """
+    Extract position from Pokemon identifier.
+    
+    Examples:
+        p1a: Pikachu -> position 0 (left)
+        p1b: Charizard -> position 1 (right)
+        p2a: Mewtwo -> position 0
+        p2b: Dragonite -> position 1
+    
+    Args:
+        identifier: Pokemon identifier string (e.g., "p1a: Pikachu")
+    
+    Returns:
+        int: Position (0 for 'a'/left or singles, 1 for 'b'/right)
+    """
+    # Extract the position letter from identifiers like "p1a" or "p2b"
+    if ':' in identifier:
+        # Format: "p1a: Pikachu"
+        prefix = identifier.split(':')[0].strip()
+    else:
+        # Format: "p1a"
+        prefix = identifier.strip()
+    
+    # The last character indicates position: 'a' = 0, 'b' = 1
+    if prefix.endswith('b'):
+        return 1
+    return 0  # Default to position 0 for 'a' or unknown
+
+
 def get_move_information(m):
     # Given a |move| line from the PS protocol, extract the user of the move and the move object
     try:
@@ -293,137 +345,144 @@ def switch_or_drag(battle, split_msg, switch_or_drag="switch"):
         other_side = battle.opponent
         side.side_conditions[constants.TOXIC_COUNT] = 0
 
+    # Determine position for doubles battles
+    position = parse_position_from_identifier(split_msg[2])
+    
     baton_passed_boosts = None
     switch_keep_volatiles = []
-    if side.active is not None:
+    
+    # Get the current active Pokemon at this position
+    current_active = side.get_active_pokemon(position)
+    
+    if current_active is not None:
         # set the pkmn's types back to their original value if the types were changed
         # if the pkmn is terastallized, this does not happen
-        if constants.TYPECHANGE in side.active.volatile_statuses:
-            original_types = pokedex[side.active.name][constants.TYPES]
+        if constants.TYPECHANGE in current_active.volatile_statuses:
+            original_types = pokedex[current_active.name][constants.TYPES]
             logger.info(
                 "{} had it's type changed - changing its types back to {}".format(
-                    side.active.name, original_types
+                    current_active.name, original_types
                 )
             )
-            side.active.types = original_types
+            current_active.types = original_types
 
         # if the target was transformed, reset its transformed attributes
-        if constants.TRANSFORM in side.active.volatile_statuses:
+        if constants.TRANSFORM in current_active.volatile_statuses:
             logger.info(
                 "{} was transformed. Resetting its transformed attributes".format(
-                    side.active.name
+                    current_active.name
                 )
             )
-            side.active.stats = calculate_stats(
-                side.active.base_stats, side.active.level
+            current_active.stats = calculate_stats(
+                current_active.base_stats, current_active.level
             )
-            side.active.ability = side.active.original_ability
-            side.active.moves = []
-            side.active.types = pokedex[side.active.name][constants.TYPES]
+            current_active.ability = current_active.original_ability
+            current_active.moves = []
+            current_active.types = pokedex[current_active.name][constants.TYPES]
 
         if (
-            side.active.original_ability is not None
-            and side.active.ability != side.active.original_ability
+            current_active.original_ability is not None
+            and current_active.ability != current_active.original_ability
         ):
             logger.info(
                 "{}'s ability was modified to {} - setting it back to {} on switch-out".format(
-                    side.active.name, side.active.ability, side.active.original_ability
+                    current_active.name, current_active.ability, current_active.original_ability
                 )
             )
-            side.active.ability = side.active.original_ability
-            side.active.original_ability = None
+            current_active.ability = current_active.original_ability
+            current_active.original_ability = None
 
         if split_msg[-1] == "[from] Baton Pass":
             side.baton_passing = False
             logger.info(
-                "Baton passing, preserving boosts: {}".format(dict(side.active.boosts))
+                "Baton passing, preserving boosts: {}".format(dict(current_active.boosts))
             )
-            baton_passed_boosts = deepcopy(side.active.boosts)
+            baton_passed_boosts = deepcopy(current_active.boosts)
 
-            if constants.SUBSTITUTE in side.active.volatile_statuses:
+            if constants.SUBSTITUTE in current_active.volatile_statuses:
                 logger.info("Baton passing, preserving substitute")
                 switch_keep_volatiles.append(constants.SUBSTITUTE)
-            if constants.LEECH_SEED in side.active.volatile_statuses:
+            if constants.LEECH_SEED in current_active.volatile_statuses:
                 logger.info("Baton passing, preserving leechseed")
                 switch_keep_volatiles.append(constants.LEECH_SEED)
         elif split_msg[-1] == "[from] Shed Tail":
             side.shed_tailing = False
 
-            if constants.SUBSTITUTE in side.active.volatile_statuses:
+            if constants.SUBSTITUTE in current_active.volatile_statuses:
                 logger.info("Shed tailing, preserving substitute")
                 switch_keep_volatiles.append(constants.SUBSTITUTE)
 
         # gen5 rest turns are reset upon switching
-        if battle.generation == "gen5" and side.active.status == constants.SLEEP:
-            if side.active.rest_turns != 0:
+        if battle.generation == "gen5" and current_active.status == constants.SLEEP:
+            if current_active.rest_turns != 0:
                 logger.info(
                     "{} switched while asleep and with non-zero rest turns, resetting rest turns to 3".format(
-                        side.active.name
+                        current_active.name
                     )
                 )
-                side.active.rest_turns = 3
+                current_active.rest_turns = 3
             else:
                 logger.info(
                     "{} switched while asleep, resetting sleep turns to 0".format(
-                        side.active.name
+                        current_active.name
                     )
                 )
-                side.active.sleep_turns = 0
+                current_active.sleep_turns = 0
 
         # gen3 rest turns are decremented by the number of consecutive sleep talks
-        if battle.generation == "gen3" and side.active.status == constants.SLEEP:
-            if side.active.rest_turns != 0:
-                side.active.rest_turns += side.active.gen_3_consecutive_sleep_talks
+        if battle.generation == "gen3" and current_active.status == constants.SLEEP:
+            if current_active.rest_turns != 0:
+                current_active.rest_turns += current_active.gen_3_consecutive_sleep_talks
                 logger.info(
                     "gen3 {} switched with {} consecutive sleep talks. Incrementing rest turns by {}".format(
-                        side.active.name,
-                        side.active.gen_3_consecutive_sleep_talks,
-                        side.active.gen_3_consecutive_sleep_talks,
+                        current_active.name,
+                        current_active.gen_3_consecutive_sleep_talks,
+                        current_active.gen_3_consecutive_sleep_talks,
                     )
                 )
-            elif side.active.sleep_turns != 0:
+            elif current_active.sleep_turns != 0:
                 logger.info(
                     "gen3 {} switched with {} consecutive sleep talks. Decrementing sleep turns by {}".format(
-                        side.active.name,
-                        side.active.gen_3_consecutive_sleep_talks,
-                        side.active.gen_3_consecutive_sleep_talks,
+                        current_active.name,
+                        current_active.gen_3_consecutive_sleep_talks,
+                        current_active.gen_3_consecutive_sleep_talks,
                     )
                 )
-                side.active.sleep_turns -= side.active.gen_3_consecutive_sleep_talks
+                current_active.sleep_turns -= current_active.gen_3_consecutive_sleep_talks
 
-        side.active.gen_3_consecutive_sleep_talks = 0
+        current_active.gen_3_consecutive_sleep_talks = 0
 
-        side.active.moves_used_since_switch_in.clear()
+        current_active.moves_used_since_switch_in.clear()
 
         # reset the boost of the pokemon being replaced
-        side.active.boosts.clear()
+        current_active.boosts.clear()
 
         # reset the volatile statuses of the pokemon being replaced
-        side.active.volatile_statuses.clear()
-        side.active.volatile_status_durations.clear()
+        current_active.volatile_statuses.clear()
+        current_active.volatile_status_durations.clear()
 
         # reset toxic count for this side
         side.side_conditions[constants.TOXIC_COUNT] = 0
 
         # if the side is alive and has regenerator, give it back 1/3 of it's maxhp
         if (
-            side.active.hp > 0
-            and not side.active.fainted
-            and side.active.ability == "regenerator"
+            current_active.hp > 0
+            and not current_active.fainted
+            and current_active.ability == "regenerator"
         ):
-            health_healed = int(side.active.max_hp / 3)
-            side.active.hp = min(side.active.hp + health_healed, side.active.max_hp)
+            health_healed = int(current_active.max_hp / 3)
+            current_active.hp = min(current_active.hp + health_healed, current_active.max_hp)
             logger.info(
                 "{} switched out with regenerator. Healing it to {}/{}".format(
-                    side.active.name, side.active.hp, side.active.max_hp
+                    current_active.name, current_active.hp, current_active.max_hp
                 )
             )
 
-        if side.active.name in ["cramorantgulping", "cramorantgorging"]:
+        if current_active.name in ["cramorantgulping", "cramorantgorging"]:
             logger.info(
-                "Resetting {} to 'cramorant' on switch out".format(side.active.name)
+                "Resetting {} to 'cramorant' on switch out".format(current_active.name)
             )
-            side.active.name = "cramorant"
+            current_active.name = "cramorant"
 
     if side_name == "user" and user_just_switched_into_zoroark(battle, switch_or_drag):
         logger.info(
@@ -510,11 +569,18 @@ def switch_or_drag(battle, split_msg, switch_or_drag="switch"):
         pokemon_name=None, move="switch {}".format(pkmn.name), turn=battle.turn
     )
 
-    # pkmn != active is a special edge-case for Zoroark
-    if side.active is not None and pkmn != side.active:
-        side.reserve.append(side.active)
+    # pkmn != current_active is a special edge-case for Zoroark
+    # Move the current active Pokemon to reserves before setting new one
+    if current_active is not None and pkmn != current_active:
+        side.reserve.append(current_active)
 
-    side.active = pkmn
+    # Set the new Pokemon as active at the appropriate position
+    side.set_active_pokemon(pkmn, position)
+    
+    # Track revealed opponent Pokemon
+    if side_name == "opponent" and hasattr(battle, 'opponent_revealed_pokemon'):
+        battle.opponent_revealed_pokemon.add(pkmn.name)
+        logger.debug(f"Opponent revealed Pokemon: {pkmn.name} (Total revealed: {len(battle.opponent_revealed_pokemon)})")
 
     # zacian-crowned is technically still zacian before switching in for the first time
     # this is handled by set-prediction for the opponent, but for the bot's pkmn we
@@ -563,10 +629,13 @@ def switch_or_drag(battle, split_msg, switch_or_drag="switch"):
             )
             continue
 
-        if ability not in pkmn.impossible_abilities and (
-            other_side.active is not None
-            and other_side.active.ability != "neutralizinggas"
-        ):
+        # Check if any active Pokemon on other side has neutralizing gas
+        has_neutralizing_gas = any(
+            p is not None and p.ability == "neutralizinggas"
+            for p in other_side.get_all_active_pokemon()
+        )
+        
+        if ability not in pkmn.impossible_abilities and not has_neutralizing_gas:
             logger.info(
                 "{} switched in, adding {} to impossible abilities".format(
                     pkmn.name, ability
@@ -584,37 +653,51 @@ def switch_or_drag(battle, split_msg, switch_or_drag="switch"):
     if baton_passed_boosts is not None:
         logger.info(
             "Applying baton passed boosts to {}: {}".format(
-                side.active.name, dict(baton_passed_boosts)
+                pkmn.name, dict(baton_passed_boosts)
             )
         )
-        side.active.boosts = baton_passed_boosts
+        pkmn.boosts = baton_passed_boosts
     for volatile in switch_keep_volatiles:
         logger.info("Keeping volatile on switch: {}".format(volatile))
-        side.active.volatile_statuses.append(volatile)
+        pkmn.volatile_statuses.append(volatile)
 
 
 def sethp(battle, split_msg):
     # |-sethp|p2a: Jellicent|317/403|[from] move: Pain Split|[silent]
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
+        if pkmn is None:
+            logger.warning("sethp: No Pokemon at position {} for opponent".format(position))
+            return
         new_hp_percentage = float(split_msg[3].split("/")[0]) / 100
         pkmn.hp = int(pkmn.max_hp * new_hp_percentage)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+        if pkmn is None:
+            logger.warning("sethp: No Pokemon at position {} for user".format(position))
+            return
         pkmn.hp = int(split_msg[3].split("/")[0])
         pkmn.max_hp = int(split_msg[3].split("/")[1].split()[0])
 
 
 def heal_or_damage(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
         other_side = battle.user
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
         if len(split_msg) == 5 and split_msg[4] == "[from] move: Revival Blessing":
             nickname = Pokemon.extract_nickname_from_pokemonshowdown_string(
                 split_msg[2]
             )
             pkmn = side.find_reserve_pokemon_by_nickname(nickname)
+
+        if pkmn is None:
+            logger.warning("heal_or_damage: No Pokemon at position {} for opponent".format(position))
+            return
 
         # opponent hp is given as a percentage
         if constants.FNT in split_msg[3]:
@@ -626,12 +709,17 @@ def heal_or_damage(battle, split_msg):
     else:
         side = battle.user
         other_side = battle.opponent
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
         if len(split_msg) == 5 and split_msg[4] == "[from] move: Revival Blessing":
             nickname = Pokemon.extract_nickname_from_pokemonshowdown_string(
                 split_msg[2]
             )
             pkmn = side.find_reserve_pokemon_by_nickname(nickname)
+        
+        if pkmn is None:
+            logger.warning("heal_or_damage: No Pokemon at position {} for user".format(position))
+            return
+            
         if constants.FNT in split_msg[3]:
             pkmn.hp = 0
         else:
@@ -652,17 +740,23 @@ def heal_or_damage(battle, split_msg):
         and other_side.name in split_msg[5]
     ):
         item = normalize_name(split_msg[4].split("item:")[-1])
-        logger.info("Setting {}'s item to: {}".format(other_side.active.name, item))
-        other_side.active.item = item
+        # Determine which Pokemon on other side used the item
+        other_position = parse_position_from_identifier(split_msg[5])
+        other_pkmn = other_side.get_active_pokemon(other_position)
+        if other_pkmn is not None:
+            logger.info("Setting {}'s item to: {}".format(other_pkmn.name, item))
+            other_pkmn.item = item
 
     if (
         len(split_msg) >= 5
         and split_msg[-1].startswith("[from]")
         and split_msg[-1].endswith("Healing Wish")
     ):
+        active_pkmn = side.get_active_pokemon(0)
+        pkmn_name = active_pkmn.name if active_pkmn else "unknown"
         logger.info(
             "{} was healed from healing wish, setting side condition to 0".format(
-                side.active.name
+                pkmn_name
             )
         )
         side.side_conditions[constants.HEALING_WISH] = 0
@@ -675,10 +769,14 @@ def heal_or_damage(battle, split_msg):
         and split_msg[1] == "-damage"
     ):
         ability = normalize_name(split_msg[4].split("ability:")[-1])
-        logger.info(
-            "Setting {}'s ability to: {}".format(other_side.active.name, ability)
-        )
-        other_side.active.ability = ability
+        # Determine which Pokemon on other side has the ability
+        other_position = parse_position_from_identifier(split_msg[5])
+        other_pkmn = other_side.get_active_pokemon(other_position)
+        if other_pkmn is not None:
+            logger.info(
+                "Setting {}'s ability to: {}".format(other_pkmn.name, ability)
+            )
+            other_pkmn.ability = ability
 
     # set the ability of the side (the side being healed, '-heal' only)
     if (
@@ -704,7 +802,13 @@ def faint(battle, split_msg):
     else:
         side = battle.user
 
-    side.active.hp = 0
+    position = parse_position_from_identifier(split_msg[2])
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is not None:
+        pkmn.hp = 0
+        logger.info("{} fainted at position {}".format(pkmn.name, position))
+    else:
+        logger.warning("faint: No Pokemon at position {} to faint".format(position))
 
 
 def fail(battle, split_msg):
@@ -720,21 +824,31 @@ def fail(battle, split_msg):
             else battle.opponent
         )
         ability = normalize_name(split_msg[4].split("ability: ")[-1])
-        logger.info(
-            "Setting {}'s ability to: {}".format(ability_side.active.name, ability)
-        )
-        ability_side.active.ability = ability
+        # Parse position from the [of] clause
+        ability_position = parse_position_from_identifier(split_msg[5])
+        ability_pkmn = ability_side.get_active_pokemon(ability_position)
+        if ability_pkmn is not None:
+            logger.info(
+                "Setting {}'s ability to: {}".format(ability_pkmn.name, ability)
+            )
+            ability_pkmn.ability = ability
 
 
 def move(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
-        pkmn = battle.opponent.active
-        opposing_pkmn = battle.user.active
+        other_side = battle.user
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
         side = battle.user
-        pkmn = battle.user.active
-        opposing_pkmn = battle.opponent.active
+        other_side = battle.opponent
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("move: No Pokemon at position {} to use move".format(position))
+        return
 
     move_name = normalize_name(split_msg[3].strip().lower())
 
@@ -759,7 +873,7 @@ def move(battle, split_msg):
                 pkmn.name, move_name, zoroark_from_reserves.name
             )
         )
-        _switch_active_with_zoroark_from_reserves(side, zoroark_from_reserves)
+        _switch_active_with_zoroark_from_reserves(side, zoroark_from_reserves, position)
 
         # the rest of this function uses `pkmn`, so we need to set it to the correct pkmn
         pkmn = zoroark_from_reserves
@@ -814,7 +928,7 @@ def move(battle, split_msg):
                     pkmn.name, move_name, actual_zoroark.name
                 )
             )
-            _switch_active_with_zoroark_from_reserves(side, actual_zoroark)
+            _switch_active_with_zoroark_from_reserves(side, actual_zoroark, position)
 
             # the rest of this function uses `pkmn`, so we need to set it to the correct pkmn
             pkmn = actual_zoroark
@@ -918,7 +1032,12 @@ def move(battle, split_msg):
     # add the move to it's moves if it hasn't been seen
     # decrement the PP by one
     # if the move is unknown, do nothing
-    pp_to_decrement = 2 if opposing_pkmn.ability == "pressure" else 1
+    # Check if any opposing Pokemon has pressure ability
+    pp_to_decrement = 1
+    for opposing_pkmn in other_side.get_all_active_pokemon():
+        if opposing_pkmn and opposing_pkmn.ability == "pressure":
+            pp_to_decrement = 2
+            break
     move_object = pkmn.get_move(move_name)
     if move_object is None:
         new_move = pkmn.add_move(move_name)
@@ -934,9 +1053,11 @@ def move(battle, split_msg):
 
     # if this pokemon used two different moves without switching,
     # set a flag to signify that it cannot have a choice item
+    active_pkmn = side.get_active_pokemon(0)
     if (
         is_opponent(battle, split_msg)
-        and side.last_used_move.pokemon_name == side.active.name
+        and active_pkmn
+        and side.last_used_move.pokemon_name == active_pkmn.name
         and side.last_used_move.move != move_name
     ):
         logger.info(
@@ -1030,12 +1151,14 @@ def move(battle, split_msg):
 
     # there is nothing special in the protocol for "wish" - it must be extracted here
     if move_name == constants.WISH and "still" not in split_msg[4]:
-        logger.info(
-            "{} used wish - expecting {} health of recovery next turn".format(
-                side.active.name, side.active.max_hp / 2
+        active_pkmn = side.get_active_pokemon(0)
+        if active_pkmn:
+            logger.info(
+                "{} used wish - expecting {} health of recovery next turn".format(
+                    active_pkmn.name, active_pkmn.max_hp / 2
+                )
             )
-        )
-        side.wish = (2, side.active.max_hp / 2)
+            side.wish = (2, active_pkmn.max_hp / 2)
 
     if move_name == "batonpass":
         side.baton_passing = True
@@ -1048,10 +1171,16 @@ def move(battle, split_msg):
 
 
 def setboost(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("setboost: No Pokemon at position {}".format(position))
+        return
 
     stat = constants.STAT_ABBREVIATION_LOOKUPS[split_msg[3].strip()]
     amount = int(split_msg[4].strip())
@@ -1060,10 +1189,16 @@ def setboost(battle, split_msg):
 
 
 def boost(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("boost: No Pokemon at position {}".format(position))
+        return
 
     stat = constants.STAT_ABBREVIATION_LOOKUPS[split_msg[3].strip()]
     amount = int(split_msg[4].strip())
@@ -1077,10 +1212,16 @@ def boost(battle, split_msg):
 
 
 def unboost(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("unboost: No Pokemon at position {}".format(position))
+        return
 
     stat = constants.STAT_ABBREVIATION_LOOKUPS[split_msg[3].strip()]
     amount = int(split_msg[4].strip())
@@ -1094,12 +1235,18 @@ def unboost(battle, split_msg):
 
 
 def status(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         other_side = battle.user
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
         other_side = battle.opponent
+
+    if pkmn is None:
+        logger.warning("status: No Pokemon at position {}".format(position))
+        return
 
     if len(split_msg) > 4 and "item: " in split_msg[4]:
         pkmn.item = normalize_name(split_msg[4].split("item:")[-1])
@@ -1132,17 +1279,27 @@ def status(battle, split_msg):
         and split_msg[5].startswith(f"[of] {other_side.name}")
     ):
         ability = normalize_name(split_msg[4].split("ability: ")[-1])
-        logger.info("Setting {}'s ability to: {}".format(pkmn.name, ability))
-        other_side.active.ability = ability
+        # Parse position from the [of] clause
+        other_position = parse_position_from_identifier(split_msg[5])
+        other_pkmn = other_side.get_active_pokemon(other_position)
+        if other_pkmn is not None:
+            logger.info("Setting {}'s ability to: {}".format(other_pkmn.name, ability))
+            other_pkmn.ability = ability
 
 
 def activate(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
-        other_pkmn = battle.user.active
+        pkmn = battle.opponent.get_active_pokemon(position)
+        other_side = battle.user
     else:
-        pkmn = battle.user.active
-        other_pkmn = battle.opponent.active
+        pkmn = battle.user.get_active_pokemon(position)
+        other_side = battle.opponent
+
+    if pkmn is None:
+        logger.warning("activate: No Pokemon at position {}".format(position))
+        return
 
     if (
         normalize_name(split_msg[3]) == constants.SUBSTITUTE
@@ -1167,13 +1324,17 @@ def activate(battle, split_msg):
 
         if ability in ["mummy", "lingeringaroma"]:
             original_ability = normalize_name(split_msg[4])
-            other_pkmn.ability = ability
-            other_pkmn.original_ability = original_ability
-            logger.info(
-                "{}'s ability was changed from {} to {}".format(
-                    other_pkmn.name, original_ability, ability
-                )
-            )
+            # In doubles, we'd need to identify which Pokemon made contact
+            # For now, apply to all active Pokemon on other side (conservative approach)
+            for other_pkmn in other_side.get_all_active_pokemon():
+                if other_pkmn is not None:
+                    other_pkmn.ability = ability
+                    other_pkmn.original_ability = original_ability
+                    logger.info(
+                        "{}'s ability was changed from {} to {}".format(
+                            other_pkmn.name, original_ability, ability
+                        )
+                    )
 
     elif split_msg[3].lower().startswith("item: ") and not any(
         i == "[consumed]" for i in split_msg
@@ -1193,10 +1354,16 @@ def activate(battle, split_msg):
 
 
 def anim(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("anim: No Pokemon at position {}".format(position))
+        return
 
     anim_name = normalize_name(split_msg[3].strip())
     if anim_name in pkmn.volatile_statuses:
@@ -1209,10 +1376,16 @@ def anim(battle, split_msg):
 
 
 def prepare(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("prepare: No Pokemon at position {}".format(position))
+        return
 
     being_prepared = normalize_name(split_msg[3])
     if being_prepared in pkmn.volatile_statuses:
@@ -1227,10 +1400,16 @@ def prepare(battle, split_msg):
 
 
 def terastallize(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("terastallize: No Pokemon at position {}".format(position))
+        return
 
     pkmn.terastallized = True
     pkmn.tera_type = normalize_name(split_msg[3])
@@ -1242,12 +1421,18 @@ def terastallize(battle, split_msg):
 
 
 def start_volatile_status(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
         side = battle.opponent
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
         side = battle.user
+
+    if pkmn is None:
+        logger.warning("start_volatile_status: No Pokemon at position {}".format(position))
+        return
 
     volatile_status = normalize_name(split_msg[3].split(":")[-1])
 
@@ -1335,10 +1520,16 @@ def start_volatile_status(battle, split_msg):
 
 
 def end_volatile_status(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("end_volatile_status: No Pokemon at position {}".format(position))
+        return
 
     volatile_status = normalize_name(split_msg[3].split(":")[-1])
     if volatile_status == constants.SUBSTITUTE:
@@ -1379,6 +1570,8 @@ def end_volatile_status(battle, split_msg):
 
 
 def curestatus(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
@@ -1386,20 +1579,30 @@ def curestatus(battle, split_msg):
 
     pkmn_name = split_msg[2].split(":")[-1].strip()
 
-    if normalize_name(pkmn_name) == side.active.name:
-        pkmn = side.active
-    else:
+    # Check if it's one of the active Pokemon
+    pkmn = None
+    for active_pkmn in side.get_all_active_pokemon():
+        if active_pkmn is not None and normalize_name(pkmn_name) == active_pkmn.name:
+            pkmn = active_pkmn
+            break
+    
+    # If not active, check reserves
+    if pkmn is None:
         try:
             pkmn = next(
                 filter(lambda x: x.name == normalize_name(pkmn_name), side.reserve)
             )
         except StopIteration:
             logger.warning(
-                "The pokemon {} does not exist in the party, defaulting to the active pokemon".format(
-                    normalize_name(pkmn_name)
+                "The pokemon {} does not exist in the party, defaulting to position {}".format(
+                    normalize_name(pkmn_name), position
                 )
             )
-            pkmn = side.active
+            pkmn = side.get_active_pokemon(position)
+    
+    if pkmn is None:
+        logger.warning("curestatus: Could not find Pokemon {}".format(pkmn_name))
+        return
 
     # even if rest wasn't the cause of sleep, this should be set to 0
     if pkmn.status == constants.SLEEP:
@@ -1417,13 +1620,18 @@ def curestatus(battle, split_msg):
 
 
 def cureteam(battle, split_msg):
-    """Cure every pokemon on the opponent's team of it's status"""
+    """Cure every pokemon on the team of its status"""
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
         side = battle.user
 
-    side.active.status = None
+    # Cure all active Pokemon
+    for pkmn in side.get_all_active_pokemon():
+        if pkmn is not None:
+            pkmn.status = None
+    
+    # Cure all reserve Pokemon
     for pkmn in filter(lambda p: isinstance(p, Pokemon), side.reserve):
         pkmn.status = None
         pkmn.rest_turns = 0
@@ -1454,7 +1662,10 @@ def weather(battle, split_msg):
         logger.info("Resetting weather source to None")
         battle.weather_source = None
     elif side is not None and side_name is not None:
-        battle.weather_source = f"{side_name}:{side.active.name}"
+        # Get first active Pokemon for weather source
+        active_pkmn = side.get_active_pokemon(0)
+        if active_pkmn:
+            battle.weather_source = f"{side_name}:{active_pkmn.name}"
 
     if split_msg[-1] == "[upkeep]" and battle.weather_turns_remaining > 0:
         battle.weather_turns_remaining -= 1
@@ -1466,38 +1677,25 @@ def weather(battle, split_msg):
         and split_msg[3].startswith("[from] ability:")
     ):
         battle.weather_turns_remaining = -1
-    elif (
-        side is not None
-        and weather_name == constants.SUN
-        and side.active.item == "heatrock"
-    ):
-        logger.info("{} has heatrock, assuming 8 turns of sun".format(side.active.name))
-        battle.weather_turns_remaining = 8
-    elif (
-        side is not None
-        and weather_name == constants.RAIN
-        and side.active.item == "damprock"
-    ):
-        logger.info(
-            "{} has damprock, assuming 8 turns of rain".format(side.active.name)
-        )
-        battle.weather_turns_remaining = 8
-    elif (
-        side is not None
-        and weather_name == constants.SAND
-        and side.active.item == "smoothrock"
-    ):
-        logger.info(
-            "{} has smoothrock, assuming 8 turns of sand".format(side.active.name)
-        )
-        battle.weather_turns_remaining = 8
-    elif (
-        side is not None
-        and weather_name in constants.HAIL_OR_SNOW
-        and side.active.item == "icyrock"
-    ):
-        logger.info("{} has icyrock, assuming 8 turns of hail".format(side.active.name))
-        battle.weather_turns_remaining = 8
+    elif side is not None:
+        active_pkmn = side.get_active_pokemon(0)
+        if active_pkmn:
+            if weather_name == constants.SUN and active_pkmn.item == "heatrock":
+                logger.info("{} has heatrock, assuming 8 turns of sun".format(active_pkmn.name))
+                battle.weather_turns_remaining = 8
+            elif weather_name == constants.RAIN and active_pkmn.item == "damprock":
+                logger.info(
+                    "{} has damprock, assuming 8 turns of rain".format(active_pkmn.name)
+                )
+                battle.weather_turns_remaining = 8
+            elif weather_name == constants.SAND and active_pkmn.item == "smoothrock":
+                logger.info(
+                    "{} has smoothrock, assuming 8 turns of sand".format(active_pkmn.name)
+                )
+                battle.weather_turns_remaining = 8
+            elif weather_name in constants.HAIL_OR_SNOW and active_pkmn.item == "icyrock":
+                logger.info("{} has icyrock, assuming 8 turns of hail".format(active_pkmn.name))
+                battle.weather_turns_remaining = 8
     else:
         battle.weather_turns_remaining = 5
 
@@ -1516,9 +1714,11 @@ def weather(battle, split_msg):
         ):
             side = battle.opponent
             pkmn_name = battle.weather_source.split(":")[-1]
+            # Check if active Pokemon matches pkmn_name
+            active_pkmn = side.get_active_pokemon(0)
             pkmn = (
-                side.active
-                if side.active.name == pkmn_name
+                active_pkmn
+                if active_pkmn and active_pkmn.name == pkmn_name
                 else side.find_pokemon_in_reserves(pkmn_name)
             )
             if pkmn is not None and pkmn.item == constants.UNKNOWN_ITEM:
@@ -1542,8 +1742,10 @@ def weather(battle, split_msg):
 
     if side is not None and len(split_msg) >= 5 and side.name in split_msg[4]:
         ability = normalize_name(split_msg[3].split(":")[-1].strip())
-        logger.info("Setting {} ability to {}".format(side.active.name, ability))
-        side.active.ability = ability
+        active_pkmn = side.get_active_pokemon(0)
+        if active_pkmn:
+            logger.info("Setting {} ability to {}".format(active_pkmn.name, ability))
+            active_pkmn.ability = ability
 
 
 def fieldstart(battle, split_msg):
@@ -1607,17 +1809,21 @@ def sidestart(battle, split_msg):
         ):
             increment_amount += 3
 
+        active_pkmn = side.get_active_pokemon(0)
+        pkmn_name = active_pkmn.name if active_pkmn else "unknown"
         side.side_conditions[condition] = increment_amount
         logger.info(
             "Setting side condition {} to {} for {}".format(
-                condition, SIDE_CONDITION_DEFAULT_DURATION[condition], side.active.name
+                condition, SIDE_CONDITION_DEFAULT_DURATION[condition], pkmn_name
             )
         )
     else:
+        active_pkmn = side.get_active_pokemon(0)
+        pkmn_name = active_pkmn.name if active_pkmn else "unknown"
         side.side_conditions[condition] += 1
         logger.info(
             "Incremented side condition {} to {} for {}".format(
-                condition, side.side_conditions[condition], side.active.name
+                condition, side.side_conditions[condition], pkmn_name
             )
         )
 
@@ -1646,7 +1852,9 @@ def swapsideconditions(battle, _):
 
 
 def set_item(battle, split_msg):
-    """Set the opponent's item"""
+    """Set the Pokemon's item"""
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
         other_side = battle.user
@@ -1654,26 +1862,35 @@ def set_item(battle, split_msg):
         side = battle.user
         other_side = battle.opponent
 
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("set_item: No Pokemon at position {}".format(position))
+        return
+
     item = normalize_name(split_msg[3].strip())
 
     if (
         len(split_msg) >= 5
-        and side.active.removed_item is None
-        and item != side.active.item
-        and side.active.item not in [constants.UNKNOWN_ITEM]
+        and pkmn.removed_item is None
+        and item != pkmn.item
+        and pkmn.item not in [constants.UNKNOWN_ITEM]
     ):
-        logger.info("{}'s removed item is {}".format(side.active.name, item))
-        side.active.removed_item = side.active.item
+        logger.info("{}'s removed item is {}".format(pkmn.name, item))
+        pkmn.removed_item = pkmn.item
 
     # when the bot gets tricked we set the opponent's removed item
     if (
         len(split_msg) >= 5
         and "[from] move: Trick" in split_msg[4]
         and not is_opponent(battle, split_msg)
-        and other_side.active.removed_item is None
     ):
-        logger.info("Setting opponent's removed_item to {}".format(item))
-        other_side.active.removed_item = item
+        # Determine which opponent Pokemon was affected
+        for pos in range(2 if battle.is_doubles else 1):
+            other_pkmn = other_side.get_active_pokemon(pos)
+            if other_pkmn is not None and other_pkmn.removed_item is None:
+                logger.info("Setting opponent's removed_item to {}".format(item))
+                other_pkmn.removed_item = item
+                break
 
     # for gen5 frisk only
     # the frisk message will (incorrectly imo) show the item as belonging to the
@@ -1687,56 +1904,73 @@ def set_item(battle, split_msg):
         and split_msg[2] in split_msg[5]
     ):
         logger.info(
-            "{} frisked the opponent's item as {}".format(side.active.name, item)
+            "{} frisked the opponent's item as {}".format(pkmn.name, item)
         )
-        logger.info("Setting {}'s item to {}".format(other_side.active.name, item))
-        other_side.active.item = item
+        # Determine which opponent Pokemon has the item
+        other_position = parse_position_from_identifier(split_msg[5])
+        other_pkmn = other_side.get_active_pokemon(other_position)
+        if other_pkmn is not None:
+            logger.info("Setting {}'s item to {}".format(other_pkmn.name, item))
+            other_pkmn.item = item
     else:
-        logger.info("Setting {}'s item to {}".format(side.active.name, item))
-        side.active.item = item
+        logger.info("Setting {}'s item to {}".format(pkmn.name, item))
+        pkmn.item = item
 
 
 def remove_item(battle, split_msg):
-    """Remove the opponent's item"""
+    """Remove the Pokemon's item"""
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
         side = battle.user
+
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("remove_item: No Pokemon at position {}".format(position))
+        return
 
     item = normalize_name(split_msg[3].strip())
 
-    logger.info("Removing {}'s item: {}".format(side.active.name, item))
-    side.active.item = None
+    logger.info("Removing {}'s item: {}".format(pkmn.name, item))
+    pkmn.item = None
 
-    if side.active.removed_item is None:
-        logger.info("Setting {}'s removed item to {}".format(side.active.name, item))
-        side.active.removed_item = item
+    if pkmn.removed_item is None:
+        logger.info("Setting {}'s removed item to {}".format(pkmn.name, item))
+        pkmn.removed_item = item
 
-    if "unburden" not in side.active.volatile_statuses and "unburden" in [
+    if "unburden" not in pkmn.volatile_statuses and "unburden" in [
         normalize_name(a)
-        for a in pokedex[side.active.name][constants.ABILITIES].values()
+        for a in pokedex[pkmn.name][constants.ABILITIES].values()
     ]:
-        logger.info("Adding unburden volatile to {}".format(side.active.name))
-        side.active.volatile_statuses.append("unburden")
+        logger.info("Adding unburden volatile to {}".format(pkmn.name))
+        pkmn.volatile_statuses.append("unburden")
 
     if len(split_msg) >= 5 and "knockoff" in normalize_name(split_msg[4]):
-        logger.info("Knockoff removed {}'s item".format(side.active.name))
-        side.active.knocked_off = True
+        logger.info("Knockoff removed {}'s item".format(pkmn.name))
+        pkmn.knocked_off = True
 
 
 def immune(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
-        pkmn = side.active
+        pkmn = side.get_active_pokemon(position)
     else:
         side = battle.user
-        pkmn = side.active
+        pkmn = side.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("immune: No Pokemon at position {}".format(position))
+        return
 
     for msg in split_msg:
         if constants.ABILITY in normalize_name(msg):
             ability = normalize_name(msg.split(":")[-1])
-            logger.info("Setting {}'s ability to {}".format(side.active.name, ability))
-            side.active.ability = ability
+            logger.info("Setting {}'s ability to {}".format(pkmn.name, ability))
+            pkmn.ability = ability
 
     zoroark_from_reserves = side.find_pokemon_in_reserves(
         "zoroark"
@@ -1749,23 +1983,23 @@ def immune(battle, split_msg):
     # Zoroark checks
     if (
         is_opponent(battle, split_msg)
-        and not side.active.name.startswith("zoroark")
+        and not pkmn.name.startswith("zoroark")
         and battle.user.last_used_move.move in all_move_json
         and all_move_json[battle.user.last_used_move.move][constants.CATEGORY]
         != constants.STATUS
         and type_effectiveness_modifier(
             all_move_json[battle.user.last_used_move.move][constants.TYPE],
-            side.active.types,
+            pkmn.types,
         )
         != 0
         and "from" not in split_msg[-1]
         and not all(x == 0 for x in expected_damage_rolls)
         and battle.user.future_sight[0] != 1
         and not (
-            side.active.terastallized
+            pkmn.terastallized
             and type_effectiveness_modifier(
                 all_move_json[battle.user.last_used_move.move][constants.TYPE],
-                [side.active.tera_type],
+                [pkmn.tera_type],
             )
             == 0
         )
@@ -1788,7 +2022,7 @@ def immune(battle, split_msg):
                     zoroark_from_reserves.name,
                 )
             )
-            _switch_active_with_zoroark_from_reserves(side, zoroark_from_reserves)
+            _switch_active_with_zoroark_from_reserves(side, zoroark_from_reserves, position)
 
         # Random Battle: Zoroark may be in the reserves so we need to check the move type
         # that it was immune to
@@ -1849,11 +2083,11 @@ def immune(battle, split_msg):
                         actual_zoroark.name,
                     )
                 )
-                _switch_active_with_zoroark_from_reserves(side, actual_zoroark)
+                _switch_active_with_zoroark_from_reserves(side, actual_zoroark, position)
 
 
 def _switch_active_with_zoroark_from_reserves(
-    opponent_side: Battler, zoroark_from_reserves: Pokemon
+    opponent_side: Battler, zoroark_from_reserves: Pokemon, position: int = 0
 ):
     """
     This is called when we are 100% sure that the opponent's active pkmn is a zoroark
@@ -1861,8 +2095,17 @@ def _switch_active_with_zoroark_from_reserves(
 
     Assumptions:
         - The `zoroark_from_reserves` MUST be in `opponent_side.reserve`
+    
+    Args:
+        opponent_side: The battler with the zoroark
+        zoroark_from_reserves: The actual zoroark Pokemon
+        position: The position of the disguised Pokemon (0 or 1 for doubles)
     """
-    pkmn = opponent_side.active
+    pkmn = opponent_side.get_active_pokemon(position)
+    
+    if pkmn is None:
+        logger.warning("_switch_active_with_zoroark_from_reserves: No Pokemon at position {}".format(position))
+        return
 
     # any moves used by this pkmn since switching in need to be removed because we cannot guarantee that they
     # belong to this pkmn
@@ -1898,11 +2141,36 @@ def _switch_active_with_zoroark_from_reserves(
 
     # swap the pkmn places
     opponent_side.reserve.append(pkmn)
-    opponent_side.active = zoroark_from_reserves
+    opponent_side.set_active_pokemon(zoroark_from_reserves, position)
     opponent_side.reserve.remove(zoroark_from_reserves)
 
 
+def showteam(battle, split_msg):
+    """
+    Handle |showteam| messages containing opponent's open team sheet data.
+    Format: |showteam|p1|packed_team_string
+    Format: |showteam|p2|packed_team_string
+    """
+    if len(split_msg) < 4:
+        logger.warning("showteam: Invalid message format")
+        return
+    
+    player_id = split_msg[2].strip() if len(split_msg) > 2 else ""
+    packed_team = split_msg[3].strip() if len(split_msg) > 3 else ""
+    
+    # Check if this is the opponent's team
+    if player_id == battle.opponent.name and packed_team:
+        try:
+            opponent_team_sets = unpack_team(packed_team)
+            battle.opponent_open_team_sets = opponent_team_sets
+            logger.info(f"Received open team sheet for opponent: {len(opponent_team_sets)} Pokemon")
+        except Exception as e:
+            logger.error(f"Error unpacking team from showteam message: {e}")
+
+
 def update_ability(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
         other_side = battle.user
@@ -1910,61 +2178,74 @@ def update_ability(battle, split_msg):
         side = battle.user
         other_side = battle.opponent
 
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("update_ability: No Pokemon at position {}".format(position))
+        return
+
     ability = normalize_name(split_msg[3])
     if len(split_msg) >= 6 and "ability:" in split_msg[4]:
         original_ability = normalize_name(split_msg[4].split(":")[-1])
         logger.info(
             "Setting {}'s original ability to {}".format(
-                side.active.name, original_ability
+                pkmn.name, original_ability
             )
         )
-        side.active.original_ability = original_ability
+        pkmn.original_ability = original_ability
 
         if split_msg[5].startswith("[of]") and other_side.name in split_msg[5]:
-            logger.info(
-                "Setting {}'s ability to {}".format(other_side.active.name, ability)
-            )
-            other_side.active.ability = ability
+            other_position = parse_position_from_identifier(split_msg[5])
+            other_pkmn = other_side.get_active_pokemon(other_position)
+            if other_pkmn is not None:
+                logger.info(
+                    "Setting {}'s ability to {}".format(other_pkmn.name, ability)
+                )
+                other_pkmn.ability = ability
     elif ability == "asone":
-        if side.active.name == "calyrexice":
+        if pkmn.name == "calyrexice":
             ability = "asoneglastrier"
-        elif side.active.name == "calyrexshadow":
+        elif pkmn.name == "calyrexshadow":
             ability = "asonespectrier"
         else:
             logger.warning(
                 "Unknown asone ability for {} - defaulting to asoneglastrier".format(
-                    side.active.name
+                    pkmn.name
                 )
             )
             ability = "asoneglastrier"
-    elif side.active.ability in ["asoneglastrier", "asonespectrier"]:
+    elif pkmn.ability in ["asoneglastrier", "asonespectrier"]:
         logger.info(
             "{} has the ability {}, will not change to {}".format(
-                side.active.name, side.active.ability, ability
+                pkmn.name, pkmn.ability, ability
             )
         )
-        ability = side.active.ability
+        ability = pkmn.ability
 
-    logger.info("Setting {}'s ability to {}".format(side.active.name, ability))
-    side.active.ability = ability
+    logger.info("Setting {}'s ability to {}".format(pkmn.name, ability))
+    pkmn.ability = ability
 
 
 def illusion_end(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
         side = battle.user
 
+    current_active = side.get_active_pokemon(position)
+    
     if (
         is_opponent(battle, split_msg)
-        and side.active.name not in ["zoroark", "zoroarkhisui"]
-        and side.active.zoroark_disguised_as is None
+        and current_active is not None
+        and current_active.name not in ["zoroark", "zoroarkhisui"]
+        and current_active.zoroark_disguised_as is None
     ):
-        logger.info("Illusion ending for opponent")
-        hp_percent = float(side.active.hp) / side.active.max_hp
-        previous_boosts = side.active.boosts
-        previous_status = side.active.status
-        previous_item = side.active.item
+        logger.info("Illusion ending for opponent at position {}".format(position))
+        hp_percent = float(current_active.hp) / current_active.max_hp
+        previous_boosts = current_active.boosts
+        previous_status = current_active.status
+        previous_item = current_active.item
 
         zoroark_from_switch_string = Pokemon.from_switch_string(split_msg[3])
         zoroark_reserve_index = None
@@ -1973,22 +2254,23 @@ def illusion_end(battle, split_msg):
                 zoroark_reserve_index = index
                 break
 
-        pkmn_disguised_as = side.active
+        pkmn_disguised_as = current_active
         pkmn_disguised_as.item = constants.UNKNOWN_ITEM
         side.reserve.append(pkmn_disguised_as)
         if zoroark_reserve_index is not None:
             reserve_zoroark = side.reserve.pop(zoroark_reserve_index)
-            side.active = reserve_zoroark
+            side.set_active_pokemon(reserve_zoroark, position)
         else:
-            side.active = zoroark_from_switch_string
+            side.set_active_pokemon(zoroark_from_switch_string, position)
 
         # the moves that have been used since this pkmn switched-in need
         # to be un-associated with the pkmn being disguised as and need to
         # be associated with the new pkmn instead
+        new_active = side.get_active_pokemon(position)
         for mv in pkmn_disguised_as.moves_used_since_switch_in:
             pkmn_disguised_as.remove_move(mv)
-            if side.active.get_move(mv) is None:
-                side.active.add_move(mv)
+            if new_active is not None and new_active.get_move(mv) is None:
+                new_active.add_move(mv)
 
         # the pokemon that we thought was active needs some attributes reset to
         # whatever the values were at switch-in as any changes that happened to zoroark
@@ -2019,15 +2301,19 @@ def illusion_end(battle, split_msg):
             )
             pkmn_disguised_as.status = pkmn_disguised_as.status_at_switch_in
 
-        side.active.hp = hp_percent * side.active.max_hp
-        side.active.boosts = previous_boosts
-        side.active.status = previous_status
-        side.active.item = previous_item
+        if new_active is not None:
+            new_active.hp = hp_percent * new_active.max_hp
+            new_active.boosts = previous_boosts
+            new_active.status = previous_status
+            new_active.item = previous_item
 
-    side.active.zoroark_disguised_as = None
+    if current_active is not None:
+        current_active.zoroark_disguised_as = None
 
 
 def form_change(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
         is_user = False
@@ -2035,27 +2321,45 @@ def form_change(battle, split_msg):
         side = battle.user
         is_user = True
 
-    logger.info("Form Change: {} -> {}".format(side.active.name, split_msg[3]))
-    side.active.forme_change(split_msg[3])
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("form_change: No Pokemon at position {}".format(position))
+        return
+
+    logger.info("Form Change: {} -> {}".format(pkmn.name, split_msg[3]))
+    pkmn.forme_change(split_msg[3])
     if is_user:
         side.re_initialize_active_pokemon_from_request_json(battle.request_json)
 
 
 def zpower(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
         side = battle.user
 
-    logger.info("{} Used a Z-Move, setting item to None".format(side.active.name))
-    side.active.item = None
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("zpower: No Pokemon at position {}".format(position))
+        return
+
+    logger.info("{} Used a Z-Move, setting item to None".format(pkmn.name))
+    pkmn.item = None
 
 
 def clearnegativeboost(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("clearnegativeboost: No Pokemon at position {}".format(position))
+        return
 
     for stat, value in pkmn.boosts.items():
         if value < 0:
@@ -2064,10 +2368,16 @@ def clearnegativeboost(battle, split_msg):
 
 
 def clearboost(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
-        pkmn = battle.opponent.active
+        pkmn = battle.opponent.get_active_pokemon(position)
     else:
-        pkmn = battle.user.active
+        pkmn = battle.user.get_active_pokemon(position)
+
+    if pkmn is None:
+        logger.warning("clearboost: No Pokemon at position {}".format(position))
+        return
 
     for stat, value in pkmn.boosts.items():
         logger.info("Setting {}'s {} boost to 0".format(pkmn.name, stat))
@@ -2075,63 +2385,77 @@ def clearboost(battle, split_msg):
 
 
 def clearallboost(battle, _):
-    pkmn = battle.user.active
-    for stat, value in pkmn.boosts.items():
-        if value != 0:
-            logger.info("Setting {}'s {} boost to 0".format(pkmn.name, stat))
-            pkmn.boosts[stat] = 0
+    # Clear boosts for all active Pokemon on both sides
+    for pkmn in battle.user.get_all_active_pokemon():
+        for stat, value in pkmn.boosts.items():
+            if value != 0:
+                logger.info("Setting {}'s {} boost to 0".format(pkmn.name, stat))
+                pkmn.boosts[stat] = 0
 
-    pkmn = battle.opponent.active
-    for stat, value in pkmn.boosts.items():
-        if value != 0:
-            logger.info("Setting {}'s {} boost to 0".format(pkmn.name, stat))
-            pkmn.boosts[stat] = 0
+    for pkmn in battle.opponent.get_all_active_pokemon():
+        for stat, value in pkmn.boosts.items():
+            if value != 0:
+                logger.info("Setting {}'s {} boost to 0".format(pkmn.name, stat))
+                pkmn.boosts[stat] = 0
 
 
 def singleturn(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
         side = battle.user
+
+    pkmn = side.get_active_pokemon(position)
 
     move_name = normalize_name(split_msg[3].split(":")[-1])
     if move_name in constants.PROTECT_VOLATILE_STATUSES:
         # increment by 2 because the `upkeep` function will decrement by 1 on every end-of-turn
         side.side_conditions[constants.PROTECT] += 2
+        pkmn_name = pkmn.name if pkmn is not None else "Pokemon"
         logger.info(
             "{} used a protect move, set protect side condition to {}".format(
-                side.active.name, side.side_conditions[constants.PROTECT]
+                pkmn_name, side.side_conditions[constants.PROTECT]
             )
         )
 
     # |-singleturn|p1a: Skarmory|move: Roost
     elif move_name == constants.ROOST:
-        # set to 2 because the `upkeep` function will decrement by 1 on every end-of-turn
-        side.active.volatile_statuses.append(constants.ROOST)
-        logger.info(
-            "{} has acquired the 'roost' volatilestatus".format(side.active.name)
-        )
+        if pkmn is not None:
+            # set to 2 because the `upkeep` function will decrement by 1 on every end-of-turn
+            pkmn.volatile_statuses.append(constants.ROOST)
+            logger.info(
+                "{} has acquired the 'roost' volatilestatus".format(pkmn.name)
+            )
 
 
 def mustrecharge(battle, split_msg):
     # Bot's side does not get mustrecharge because the request JSON
     # will contain the only available `recharge` move
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
-        logger.info("{} must recharge".format(side.active.name))
-        side.active.volatile_statuses.append("mustrecharge")
+        pkmn = side.get_active_pokemon(position)
+        if pkmn is not None:
+            logger.info("{} must recharge".format(pkmn.name))
+            pkmn.volatile_statuses.append("mustrecharge")
     else:
         side = battle.user
+        pkmn = side.get_active_pokemon(position)
 
     # Truant and mustrecharge together means that you only recharge next turn
-    if "truant" in side.active.volatile_statuses:
+    if pkmn is not None and "truant" in pkmn.volatile_statuses:
         logger.info(
-            "{} must recharge with truant, removing truant".format(side.active.name)
+            "{} must recharge with truant, removing truant".format(pkmn.name)
         )
-        remove_volatile(side.active, "truant")
+        remove_volatile(pkmn, "truant")
 
 
 def cant(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
         opponent = True
@@ -2139,8 +2463,13 @@ def cant(battle, split_msg):
         side = battle.user
         opponent = False
 
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("cant: No Pokemon at position {}".format(position))
+        return
+
     side.last_used_move = LastUsedMove(
-        pokemon_name=side.active.name,
+        pokemon_name=pkmn.name,
         move=side.last_used_move.move,
         turn=battle.turn,
     )
@@ -2149,58 +2478,58 @@ def cant(battle, split_msg):
     if len(split_msg) == 4 and split_msg[3] == "ability: Truant":
         logger.info(
             "{} got 'cant' from truant, removing truant volatile".format(
-                side.active.name
+                pkmn.name
             )
         )
-        remove_volatile(side.active, "truant")
+        remove_volatile(pkmn, "truant")
 
     # |cant|p2a: Tauros|recharge
     if len(split_msg) == 4 and split_msg[3] == "recharge":
         logger.info(
             "{} got 'cant' from recharge, removing mustrecharge volatile".format(
-                side.active.name
+                pkmn.name
             )
         )
-        if opponent and "mustrecharge" not in side.active.volatile_statuses:
+        if opponent and "mustrecharge" not in pkmn.volatile_statuses:
             logger.warning(
-                "{} did not have mustrecharge but recharged".format(side.active.name)
+                "{} did not have mustrecharge but recharged".format(pkmn.name)
             )
 
-        remove_volatile(side.active, "mustrecharge")
+        remove_volatile(pkmn, "mustrecharge")
 
     # |cant|p2a: Politoed|move: Taunt|Toxic
     if len(split_msg) == 4 and split_msg[3].startswith("move: "):
         move_name = normalize_name(split_msg[3].split(":")[-1])
-        move_object = side.active.get_move(move_name)
+        move_object = pkmn.get_move(move_name)
         if move_object is None:
-            side.active.add_move(move_name)
+            pkmn.add_move(move_name)
             logger.info(
                 "Adding {} to {}'s moves from 'cant'".format(
-                    move_name, side.active.name
+                    move_name, pkmn.name
                 )
             )
 
     if len(split_msg) == 4 and split_msg[3] == constants.SLEEP:
-        logger.info("{} got 'cant' from sleep".format(side.active.name))
-        if side.active.rest_turns > 1:
-            side.active.rest_turns -= 1
+        logger.info("{} got 'cant' from sleep".format(pkmn.name))
+        if pkmn.rest_turns > 1:
+            pkmn.rest_turns -= 1
             logger.info(
                 "Decrementing {}'s rest_turns to {}".format(
-                    side.active.name, side.active.rest_turns
+                    pkmn.name, pkmn.rest_turns
                 )
             )
-        elif side.active.rest_turns == 1:
+        elif pkmn.rest_turns == 1:
             logger.critical(
                 "{} has rest_turns==1 and got 'cant' from sleep".format(
-                    side.active.name
+                    pkmn.name
                 )
             )
             exit(1)
         else:
-            side.active.sleep_turns += 1
+            pkmn.sleep_turns += 1
             logger.info(
                 "Incrementing {}'s sleep_turns to {}".format(
-                    side.active.name, side.active.sleep_turns
+                    pkmn.name, pkmn.sleep_turns
                 )
             )
 
@@ -2224,45 +2553,55 @@ def upkeep(battle, _):
         )
         battle.field_turns_remaining = 3
 
-    if constants.ROOST in battle.user.active.volatile_statuses:
-        logger.info(
-            "Removing 'roost' from {}'s volatiles".format(battle.user.active.name)
-        )
-        battle.user.active.volatile_statuses = [
-            v for v in battle.user.active.volatile_statuses if v != constants.ROOST
-        ]
+    # Remove ROOST from all active Pokemon
+    for pkmn in battle.user.get_all_active_pokemon():
+        if constants.ROOST in pkmn.volatile_statuses:
+            logger.info(
+                "Removing 'roost' from {}'s volatiles".format(pkmn.name)
+            )
+            pkmn.volatile_statuses = [
+                v for v in pkmn.volatile_statuses if v != constants.ROOST
+            ]
 
-    if constants.ROOST in battle.opponent.active.volatile_statuses:
-        logger.info(
-            "Removing 'roost' from {}'s volatiles".format(battle.opponent.active.name)
-        )
-        battle.opponent.active.volatile_statuses = [
-            v for v in battle.opponent.active.volatile_statuses if v != constants.ROOST
-        ]
+    for pkmn in battle.opponent.get_all_active_pokemon():
+        if constants.ROOST in pkmn.volatile_statuses:
+            logger.info(
+                "Removing 'roost' from {}'s volatiles".format(pkmn.name)
+            )
+            pkmn.volatile_statuses = [
+                v for v in pkmn.volatile_statuses if v != constants.ROOST
+            ]
 
     for side in [battle.user, battle.opponent]:
         side_string = "opponent" if side == battle.opponent else "user"
 
-        if (
-            "taunt" in side.active.volatile_statuses
-            and battle.generation in constants.TAUNT_DURATION_INCREMENT_END_OF_TURN
-        ):
-            side.active.volatile_status_durations[constants.TAUNT] += 1
-            logger.info(
-                "Incrementing taunt duration for {} to {}".format(
-                    side_string,
-                    side.active.volatile_status_durations[constants.TAUNT],
+        # Handle both singles (side.active is Pokemon) and doubles (side.active is list)
+        active_pokemon_list = side.active if isinstance(side.active, list) else [side.active]
+        
+        for active_pkmn in active_pokemon_list:
+            if active_pkmn is None:
+                continue
+                
+            if (
+                "taunt" in active_pkmn.volatile_statuses
+                and battle.generation in constants.TAUNT_DURATION_INCREMENT_END_OF_TURN
+            ):
+                active_pkmn.volatile_status_durations[constants.TAUNT] += 1
+                logger.info(
+                    "Incrementing taunt duration for {} to {}".format(
+                        side_string,
+                        active_pkmn.volatile_status_durations[constants.TAUNT],
+                    )
                 )
-            )
 
-        if constants.LOCKED_MOVE in side.active.volatile_statuses:
-            side.active.volatile_status_durations[constants.LOCKED_MOVE] += 1
-            logger.info(
-                "Incremented lockedmove for {} to {}".format(
-                    side_string,
-                    side.active.volatile_status_durations[constants.LOCKED_MOVE],
+            if constants.LOCKED_MOVE in active_pkmn.volatile_statuses:
+                active_pkmn.volatile_status_durations[constants.LOCKED_MOVE] += 1
+                logger.info(
+                    "Incremented lockedmove for {} to {}".format(
+                        side_string,
+                        active_pkmn.volatile_status_durations[constants.LOCKED_MOVE],
+                    )
                 )
-            )
 
         if side.side_conditions[constants.REFLECT] > 0:
             side.side_conditions[constants.REFLECT] -= 1
@@ -2333,45 +2672,50 @@ def upkeep(battle, _):
                 )
             )
 
-        pkmn = side.active
-        if constants.YAWN in pkmn.volatile_statuses:
-            previous_duration = pkmn.volatile_status_durations[constants.YAWN]
-            if previous_duration == 0:
-                pkmn.volatile_status_durations[constants.YAWN] = 1
-            elif previous_duration == 1:
-                pkmn.volatile_status_durations[constants.YAWN] = 0
-                remove_volatile(pkmn, constants.YAWN)
-                logger.info("Removed yawn volatile from {}".format(pkmn.name))
-            else:
-                raise ValueError(
-                    "Got yawn duration {} for {}".format(previous_duration, pkmn.name)
+        # Handle both singles and doubles for pkmn-specific volatile status updates
+        active_pokemon_list_2 = side.active if isinstance(side.active, list) else [side.active]
+        for pkmn in active_pokemon_list_2:
+            if pkmn is None:
+                continue
+                
+            if constants.YAWN in pkmn.volatile_statuses:
+                previous_duration = pkmn.volatile_status_durations[constants.YAWN]
+                if previous_duration == 0:
+                    pkmn.volatile_status_durations[constants.YAWN] = 1
+                elif previous_duration == 1:
+                    pkmn.volatile_status_durations[constants.YAWN] = 0
+                    remove_volatile(pkmn, constants.YAWN)
+                    logger.info("Removed yawn volatile from {}".format(pkmn.name))
+                else:
+                    raise ValueError(
+                        "Got yawn duration {} for {}".format(previous_duration, pkmn.name)
+                    )
+                logger.info(
+                    "{} had yawn at the end of the turn, changed duration from {} to {}".format(
+                        pkmn.name,
+                        previous_duration,
+                        pkmn.volatile_status_durations[constants.YAWN],
+                    )
                 )
-            logger.info(
-                "{} had yawn at the end of the turn, changed duration from {} to {}".format(
-                    pkmn.name,
-                    previous_duration,
-                    pkmn.volatile_status_durations[constants.YAWN],
+            if constants.SLOW_START in pkmn.volatile_statuses:
+                pkmn.volatile_status_durations[constants.SLOW_START] -= 1
+                logger.info(
+                    "Decremented slow start duration for {} to {}".format(
+                        pkmn.name, pkmn.volatile_status_durations[constants.SLOW_START]
+                    )
                 )
-            )
-        if constants.SLOW_START in pkmn.volatile_statuses:
-            pkmn.volatile_status_durations[constants.SLOW_START] -= 1
-            logger.info(
-                "Decremented slow start duration for {} to {}".format(
-                    pkmn.name, pkmn.volatile_status_durations[constants.SLOW_START]
-                )
-            )
 
-        if (
-            battle.generation == "gen3"
-            and pkmn.status == constants.SLEEP
-            and side.last_used_move.move != "sleeptalk"
-        ):
-            pkmn.gen_3_consecutive_sleep_talks = 0
-            logger.info(
-                "{} is asleep but didn't use sleeptalk, decrementing gen_3_consecutive_sleep_talks to 0".format(
-                    pkmn.name
+            if (
+                battle.generation == "gen3"
+                and pkmn.status == constants.SLEEP
+                and side.last_used_move.move != "sleeptalk"
+            ):
+                pkmn.gen_3_consecutive_sleep_talks = 0
+                logger.info(
+                    "{} is asleep but didn't use sleeptalk, decrementing gen_3_consecutive_sleep_talks to 0".format(
+                        pkmn.name
+                    )
                 )
-            )
 
     if battle.user.side_conditions[constants.PROTECT] > 0:
         battle.user.side_conditions[constants.PROTECT] -= 1
@@ -2424,38 +2768,47 @@ def upkeep(battle, _):
     # If a pkmn has less than maxhp during upkeep,
     # we do not want to guess leftovers/blacksludge anymore when it is time to guess an item
     # leftovers and blacksludge will reveal themselves at the end of the turn if they exist
-    opp_pkmn = battle.opponent.active
-    if opp_pkmn.hp < opp_pkmn.max_hp:
-        logger.info(
-            "{} has less than maxhp during upkeep, no longer guessing leftovers or blacksludge".format(
-                opp_pkmn.name
+    for opp_pkmn in battle.opponent.get_all_active_pokemon():
+        if opp_pkmn.hp < opp_pkmn.max_hp:
+            logger.info(
+                "{} has less than maxhp during upkeep, no longer guessing leftovers or blacksludge".format(
+                    opp_pkmn.name
+                )
             )
-        )
-        opp_pkmn.impossible_items.add(constants.LEFTOVERS)
-        opp_pkmn.impossible_items.add(constants.BLACK_SLUDGE)
+            opp_pkmn.impossible_items.add(constants.LEFTOVERS)
+            opp_pkmn.impossible_items.add(constants.BLACK_SLUDGE)
 
-    if opp_pkmn.status is None:
-        opp_pkmn.impossible_items.add("flameorb")
-        opp_pkmn.impossible_items.add("toxicorb")
+        if opp_pkmn.status is None:
+            opp_pkmn.impossible_items.add("flameorb")
+            opp_pkmn.impossible_items.add("toxicorb")
 
 
 def mega(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
     else:
         side = battle.user
 
-    side.active.is_mega = True
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("mega: No Pokemon at position {}".format(position))
+        return
+
+    pkmn.is_mega = True
     forced_mega_ability = normalize_name(
-        pokedex[side.active.name][constants.ABILITIES]["0"]
+        pokedex[pkmn.name][constants.ABILITIES]["0"]
     )
-    side.active.ability = forced_mega_ability
+    pkmn.ability = forced_mega_ability
     logger.info(
-        "Mega-Pokemon: {} with ability {}".format(side.active.name, forced_mega_ability)
+        "Mega-Pokemon: {} with ability {}".format(pkmn.name, forced_mega_ability)
     )
 
 
 def transform(battle, split_msg):
+    position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         side = battle.opponent
         other_side = battle.user
@@ -2463,35 +2816,51 @@ def transform(battle, split_msg):
         side = battle.user
         other_side = battle.opponent
 
-    transformed_into_name = other_side.active.name
+    pkmn = side.get_active_pokemon(position)
+    if pkmn is None:
+        logger.warning("transform: No Pokemon at position {}".format(position))
+        return
+
+    # Determine which Pokemon was transformed into (usually the first active on other side)
+    # In doubles, we'd need more context to know which one, default to first active
+    transformed_into = None
+    for other_pkmn in other_side.get_all_active_pokemon():
+        if other_pkmn is not None:
+            transformed_into = other_pkmn
+            break
+    
+    if transformed_into is None:
+        logger.warning("transform: No Pokemon to transform into")
+        return
+
+    transformed_into_name = transformed_into.name
     logger.info(
-        "{} transformed into {}".format(side.active.name, transformed_into_name)
+        "{} transformed into {}".format(pkmn.name, transformed_into_name)
     )
-    side.active.boosts = deepcopy(other_side.active.boosts)
+    pkmn.boosts = deepcopy(transformed_into.boosts)
     logger.info(
-        "Copied {}'s boosts: {}".format(side.active.name, dict(side.active.boosts))
+        "Copied {}'s boosts: {}".format(pkmn.name, dict(pkmn.boosts))
     )
 
-    if constants.TRANSFORM not in side.active.volatile_statuses:
-        side.active.volatile_statuses.append(constants.TRANSFORM)
+    if constants.TRANSFORM not in pkmn.volatile_statuses:
+        pkmn.volatile_statuses.append(constants.TRANSFORM)
 
-    transformed_into = other_side.active
-    side.active.stats = deepcopy(transformed_into.stats)
-    side.active.moves = deepcopy(transformed_into.moves)
-    side.active.types = deepcopy(transformed_into.types)
-    side.active.boosts = deepcopy(transformed_into.boosts)
+    pkmn.stats = deepcopy(transformed_into.stats)
+    pkmn.moves = deepcopy(transformed_into.moves)
+    pkmn.types = deepcopy(transformed_into.types)
+    pkmn.boosts = deepcopy(transformed_into.boosts)
 
-    for mv in side.active.moves:
+    for mv in pkmn.moves:
         mv.current_pp = 5
 
     if split_msg[-1].startswith("[from]") and "ability:" in split_msg[-1]:
-        side.active.original_ability = normalize_name(
+        pkmn.original_ability = normalize_name(
             split_msg[-1].split("ability:")[-1].strip()
         )
-    elif side.active.ability is not None:
-        side.active.original_ability = side.active.ability
+    elif pkmn.ability is not None:
+        pkmn.original_ability = pkmn.ability
 
-    side.active.ability = deepcopy(transformed_into.ability)
+    pkmn.ability = deepcopy(transformed_into.ability)
 
 
 def turn(battle, split_msg):
@@ -2568,12 +2937,15 @@ def check_speed_ranges(battle, msg_lines):
         and moves[0][0].startswith(battle.opponent.name)
         and moves[0][1][constants.ID] != "pursuit"
     ):
-        moves.append(
-            (
-                "{}a: {}".format(battle.opponent.name, battle.user.active.name),
-                all_move_json[normalize_name(battle.user.last_selected_move.move)],
+        # For doubles, this speed check logic is simplified
+        user_active = battle.user.get_active_pokemon(0)
+        if user_active:
+            moves.append(
+                (
+                    "{}a: {}".format(battle.opponent.name, user_active.name),
+                    all_move_json[normalize_name(battle.user.last_selected_move.move)],
+                )
             )
-        )
 
     # if the bot knocked out the opponent there's nothing to do here
     elif number_of_moves == 1:
@@ -2647,31 +3019,34 @@ def check_speed_ranges(battle, msg_lines):
     if battle.trick_room:
         bot_went_first = not bot_went_first
 
-    if bot_went_first:
-        opponent_max_speed = min(
-            battle.opponent.active.speed_range.max, speed_threshold
-        )
-        battle.opponent.active.speed_range = StatRange(
-            min=battle.opponent.active.speed_range.min, max=opponent_max_speed
-        )
-        logger.info(
-            "Updated {}'s max speed to {}".format(
-                battle.opponent.active.name, battle.opponent.active.speed_range.max
+    # For doubles, speed tracking is simplified - use first active Pokemon
+    opp_active = battle.opponent.get_active_pokemon(0)
+    if opp_active:
+        if bot_went_first:
+            opponent_max_speed = min(
+                opp_active.speed_range.max, speed_threshold
             )
-        )
+            opp_active.speed_range = StatRange(
+                min=opp_active.speed_range.min, max=opponent_max_speed
+            )
+            logger.info(
+                "Updated {}'s max speed to {}".format(
+                    opp_active.name, opp_active.speed_range.max
+                )
+            )
 
-    else:
-        opponent_min_speed = max(
-            battle.opponent.active.speed_range.min, speed_threshold
-        )
-        battle.opponent.active.speed_range = StatRange(
-            min=opponent_min_speed, max=battle.opponent.active.speed_range.max
-        )
-        logger.info(
-            "Updated {}'s min speed to {}".format(
-                battle.opponent.active.name, battle.opponent.active.speed_range.min
+        else:
+            opponent_min_speed = max(
+                opp_active.speed_range.min, speed_threshold
             )
-        )
+            opp_active.speed_range = StatRange(
+                min=opponent_min_speed, max=opp_active.speed_range.max
+            )
+            logger.info(
+                "Updated {}'s min speed to {}".format(
+                    opp_active.name, opp_active.speed_range.min
+                )
+            )
 
 
 def check_opponent_hiddenpower(battle, msg_line):
@@ -2728,6 +3103,10 @@ def check_opponent_hiddenpower(battle, msg_line):
 
 
 def check_choicescarf(battle, msg_lines):
+    # Skip for doubles - this logic is singles-specific
+    if battle.is_doubles:
+        return
+    
     # If either side switched this turn - don't do this check
     if any(
         battle.generation in ["gen1", "gen2", "gen3"]
@@ -2746,12 +3125,14 @@ def check_choicescarf(battle, msg_lines):
         return
 
     elif number_of_moves == 1:
-        moves.append(
-            (
-                "{}a: {}".format(battle.opponent.name, battle.user.active.name),
-                all_move_json[normalize_name(battle.user.last_selected_move.move)],
+        user_active = battle.user.get_active_pokemon(0)
+        if user_active:
+            moves.append(
+                (
+                    "{}a: {}".format(battle.opponent.name, user_active.name),
+                    all_move_json[normalize_name(battle.user.last_selected_move.move)],
+                )
             )
-        )
 
     if moves[0][1][constants.PRIORITY] != moves[1][1][constants.PRIORITY]:
         return
@@ -2810,12 +3191,19 @@ def get_damage_dealt(battle, split_msg, next_messages):
     move_name = normalize_name(split_msg[3])
     critical_hit = False
 
+    # Parse positions for attacker and defender
+    attacker_position = parse_position_from_identifier(split_msg[2])
+    
     if is_opponent(battle, split_msg):
         attacking_side = battle.opponent
         defending_side = battle.user
     else:
         attacking_side = battle.user
         defending_side = battle.opponent
+
+    attacker_pkmn = attacking_side.get_active_pokemon(attacker_position)
+    if attacker_pkmn is None:
+        return None
 
     for line in next_messages:
         next_line_split = line.split("|")
@@ -2832,28 +3220,33 @@ def get_damage_dealt(battle, split_msg, next_messages):
             next_line_split[1] == "-damage"
             and defending_side.name in next_line_split[2]
         ):
+            defender_position = parse_position_from_identifier(next_line_split[2])
+            defender_pkmn = defending_side.get_active_pokemon(defender_position)
+            if defender_pkmn is None:
+                continue
+                
             final_health, maxhp, _ = get_pokemon_info_from_condition(next_line_split[3])
             # maxhp can be 0 if the targetted pokemon fainted
             # the message would be: "0 fnt"
             if maxhp == 0:
-                maxhp = defending_side.active.max_hp
+                maxhp = defender_pkmn.max_hp
 
             damage_dealt = (
-                defending_side.active.hp / defending_side.active.max_hp
+                defender_pkmn.hp / defender_pkmn.max_hp
             ) * maxhp - final_health
             damage_percentage = round(damage_dealt / maxhp, 4)
 
             logger.info(
                 "{} did {}% damage to {} with {}".format(
-                    attacking_side.active.name,
+                    attacker_pkmn.name,
                     damage_percentage * 100,
-                    defending_side.active.name,
+                    defender_pkmn.name,
                     move_name,
                 )
             )
             return DamageDealt(
-                attacker=attacking_side.active.name,
-                defender=defending_side.active.name,
+                attacker=attacker_pkmn.name,
+                defender=defender_pkmn.name,
                 move=move_name,
                 percent_damage=damage_percentage,
                 crit=critical_hit,
@@ -2942,6 +3335,10 @@ def update_dataset_possibilities(
     damage_dealt,
     check_type,
 ):
+    # Skip for doubles - this logic is singles-specific
+    if battle.is_doubles:
+        return
+    
     if (
         battle.wait
         or battle.generation in {"gen1", "gen2"}
@@ -3052,14 +3449,23 @@ def update_dataset_possibilities(
 
 def check_heavydutyboots(battle, msg_lines):
     side_to_check = battle.opponent
+    
+    # Get the active Pokemon - handle both singles and doubles
+    if battle.is_doubles:
+        # For doubles, this function doesn't make sense to run
+        # It would need to know which position switched in
+        # Skip for now - this is a heuristic function anyway
+        return
+    
+    active_pkmn = side_to_check.active
 
     if (
         battle.generation not in ["gen8", "gen9"]
-        or side_to_check.active.item != constants.UNKNOWN_ITEM
+        or active_pkmn.item != constants.UNKNOWN_ITEM
         or "magicguard"
         in [
             normalize_name(a)
-            for a in pokedex[side_to_check.active.name][constants.ABILITIES].values()
+            for a in pokedex[active_pkmn.name][constants.ABILITIES].values()
         ]
     ):
         return
@@ -3079,26 +3485,29 @@ def check_heavydutyboots(battle, msg_lines):
                 pkmn_took_stealthrock_damage = True
 
         if not pkmn_took_stealthrock_damage:
-            logger.info("{} has heavydutyboots".format(side_to_check.active.name))
-            side_to_check.active.item = "heavydutyboots"
-            side_to_check.active.item_inferred = True
+            active_pkmn = side_to_check.active
+            logger.info("{} has heavydutyboots".format(active_pkmn.name))
+            active_pkmn.item = "heavydutyboots"
+            active_pkmn.item_inferred = True
         else:
+            active_pkmn = side_to_check.active
             logger.info(
                 "{} was affected by stealthrock, it cannot have heavydutyboots".format(
-                    side_to_check.active.name
+                    active_pkmn.name
                 )
             )
-            side_to_check.active.impossible_items.add(constants.HEAVY_DUTY_BOOTS)
+            active_pkmn.impossible_items.add(constants.HEAVY_DUTY_BOOTS)
 
-    elif (
+    active_pkmn = side_to_check.active
+    if (
         side_to_check.side_conditions[constants.SPIKES] > 0
         and "levitate"
         not in [
             normalize_name(a)
-            for a in pokedex[side_to_check.active.name][constants.ABILITIES].values()
+            for a in pokedex[active_pkmn.name][constants.ABILITIES].values()
         ]
-        and not side_to_check.active.has_type("flying")
-        and side_to_check.active.ability != "levitate"
+        and not active_pkmn.has_type("flying")
+        and active_pkmn.ability != "levitate"
     ):
         pkmn_took_spikes_damage = False
         for line in msg_lines:
@@ -3114,16 +3523,18 @@ def check_heavydutyboots(battle, msg_lines):
                 pkmn_took_spikes_damage = True
 
         if not pkmn_took_spikes_damage:
-            logger.info("{} has heavydutyboots".format(side_to_check.active.name))
-            side_to_check.active.item = "heavydutyboots"
-            side_to_check.active.item_inferred = True
+            active_pkmn = side_to_check.active
+            logger.info("{} has heavydutyboots".format(active_pkmn.name))
+            active_pkmn.item = "heavydutyboots"
+            active_pkmn.item_inferred = True
         else:
+            active_pkmn = side_to_check.active
             logger.info(
                 "{} was affected by spikes, it cannot have heavydutyboots".format(
-                    side_to_check.active.name
+                    active_pkmn.name
                 )
             )
-            side_to_check.active.impossible_items.add(constants.HEAVY_DUTY_BOOTS)
+            active_pkmn.impossible_items.add(constants.HEAVY_DUTY_BOOTS)
     elif (
         side_to_check.side_conditions[constants.TOXIC_SPIKES] > 0
         and side_to_check.active.status is None
@@ -3282,6 +3693,7 @@ def process_battle_updates(battle: Battle):
             "inactiveoff": inactiveoff,
             "turn": turn,
             "noinit": noinit,
+            "showteam": showteam,
         }
 
         function_to_call = battle_modifiers_lookup.get(action)

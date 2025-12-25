@@ -1,0 +1,257 @@
+{
+  "id": 1004,
+  "name": "chiyu",
+  "display_name": "Chi Yu",
+  "types": [
+    "Dark",
+    "Fire"
+  ],
+  "base_stats": {
+    "hp": 55,
+    "atk": 80,
+    "def": 80,
+    "spa": 135,
+    "spd": 120,
+    "spe": 100
+  },
+  "abilities": [
+    "Beads Of Ruin"
+  ],
+  "hidden_ability": null,
+  "height": 4,
+  "weight": 49,
+  "moves": [
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ember",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Flamethrower",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fire Spin",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Confuse Ray",
+      "learn_method": "level-up",
+      "level": 30
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reflect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fire Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flame Wheel",
+      "learn_method": "level-up",
+      "level": 5
+    },
+    {
+      "name": "Spite",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swagger",
+      "learn_method": "level-up",
+      "level": 60
+    },
+    {
+      "name": "Mean Look",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Crunch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heat Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Will O Wisp",
+      "learn_method": "level-up",
+      "level": 15
+    },
+    {
+      "name": "Memento",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Overheat",
+      "learn_method": "level-up",
+      "level": 75
+    },
+    {
+      "name": "Bounce",
+      "learn_method": "level-up",
+      "level": 55
+    },
+    {
+      "name": "Payback",
+      "learn_method": "level-up",
+      "level": 10
+    },
+    {
+      "name": "Flare Blitz",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dark Pulse",
+      "learn_method": "level-up",
+      "level": 40
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lava Plume",
+      "learn_method": "level-up",
+      "level": 45
+    },
+    {
+      "name": "Flame Charge",
+      "learn_method": "level-up",
+      "level": 20
+    },
+    {
+      "name": "Hex",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Incinerate",
+      "learn_method": "level-up",
+      "level": 25
+    },
+    {
+      "name": "Inferno",
+      "learn_method": "level-up",
+      "level": 65
+    },
+    {
+      "name": "Snarl",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Burning Jealousy",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lash Out",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ruination",
+      "learn_method": "level-up",
+      "level": 50
+    },
+    {
+      "name": "Temper Flare",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1004.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1004.png"
+}

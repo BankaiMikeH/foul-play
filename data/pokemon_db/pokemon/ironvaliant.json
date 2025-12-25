@@ -1,0 +1,427 @@
+{
+  "id": 1006,
+  "name": "ironvaliant",
+  "display_name": "Iron Valiant",
+  "types": [
+    "Fairy",
+    "Fighting"
+  ],
+  "base_stats": {
+    "hp": 74,
+    "atk": 130,
+    "def": 90,
+    "spa": 120,
+    "spd": 60,
+    "spe": 116
+  },
+  "abilities": [
+    "Quark Drive"
+  ],
+  "hidden_ability": null,
+  "height": 14,
+  "weight": 350,
+  "moves": [
+    {
+      "name": "Fire Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ice Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swords Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Disable",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psybeam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Low Kick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunderbolt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hypnosis",
+      "learn_method": "level-up",
+      "level": 7
+    },
+    {
+      "name": "Agility",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Double Team",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Confuse Ray",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reflect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Metronome",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reversal",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Destiny Bond",
+      "learn_method": "level-up",
+      "level": 77
+    },
+    {
+      "name": "Icy Wind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "False Swipe",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fury Cutter",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Encore",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psych Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Future Sight",
+      "learn_method": "level-up",
+      "level": 21
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Brick Break",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Knock Off",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Skill Swap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Imprison",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Voice",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Aerial Ace",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Magical Leaf",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Leaf Blade",
+      "learn_method": "level-up",
+      "level": 49
+    },
+    {
+      "name": "Feint",
+      "learn_method": "level-up",
+      "level": 14
+    },
+    {
+      "name": "Close Combat",
+      "learn_method": "level-up",
+      "level": 63
+    },
+    {
+      "name": "Fling",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Aura Sphere",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Poison Jab",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Night Slash",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "X Scissor",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Drain Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Vacuum Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Energy Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Claw",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Sneak",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psycho Cut",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick Room",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grass Knot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Charge Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Wide Guard",
+      "learn_method": "level-up",
+      "level": 84
+    },
+    {
+      "name": "Psyshock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stored Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Quick Guard",
+      "learn_method": "level-up",
+      "level": 84
+    },
+    {
+      "name": "Hex",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Misty Terrain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Moonblast",
+      "learn_method": "level-up",
+      "level": 56
+    },
+    {
+      "name": "Electric Terrain",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Dazzling Gleam",
+      "learn_method": "level-up",
+      "level": 28
+    },
+    {
+      "name": "Throat Chop",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic Terrain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Liquidation",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Spirit Break",
+      "learn_method": "level-up",
+      "level": 91
+    },
+    {
+      "name": "Expanding Force",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Coaching",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1006.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1006.png"
+}

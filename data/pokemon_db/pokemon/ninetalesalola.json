@@ -1,0 +1,302 @@
+{
+  "id": 10104,
+  "name": "ninetalesalola",
+  "display_name": "Ninetales Alola",
+  "types": [
+    "Ice",
+    "Fairy"
+  ],
+  "base_stats": {
+    "hp": 73,
+    "atk": 67,
+    "def": 75,
+    "spa": 81,
+    "spd": 100,
+    "spe": 109
+  },
+  "abilities": [
+    "Snow Cloak"
+  ],
+  "hidden_ability": "Snow Warning",
+  "height": 11,
+  "weight": 199,
+  "moves": [
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tail Whip",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Roar",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Ice Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Blizzard",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dig",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hypnosis",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Agility",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Confuse Ray",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flail",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Spite",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Icy Wind",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Charm",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Pain Split",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Baton Pass",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Encore",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psych Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Imprison",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Weather Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fake Tears",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Icicle Spear",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Howl",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dark Pulse",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Avalanche",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psyshock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Foul Play",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stored Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hex",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Disarming Voice",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Draining Kiss",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Misty Terrain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Play Rough",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Moonblast",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Dazzling Gleam",
+      "learn_method": "level-up",
+      "level": 0
+    },
+    {
+      "name": "Baby Doll Eyes",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Triple Axel",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Snowscape",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Chilling Water",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10104.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10104.png"
+}

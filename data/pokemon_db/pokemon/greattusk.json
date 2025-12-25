@@ -1,0 +1,317 @@
+{
+  "id": 984,
+  "name": "greattusk",
+  "display_name": "Great Tusk",
+  "types": [
+    "Ground",
+    "Fighting"
+  ],
+  "base_stats": {
+    "hp": 115,
+    "atk": 131,
+    "def": 131,
+    "spa": 53,
+    "spd": 53,
+    "spe": 87
+  },
+  "abilities": [
+    "Protosynthesis"
+  ],
+  "hidden_ability": null,
+  "height": 22,
+  "weight": 3200,
+  "moves": [
+    {
+      "name": "Horn Attack",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Roar",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earthquake",
+      "learn_method": "level-up",
+      "level": 49
+    },
+    {
+      "name": "Dig",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Defense Curl",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Slide",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reversal",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Slap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sandstorm",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rollout",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Megahorn",
+      "learn_method": "level-up",
+      "level": 77
+    },
+    {
+      "name": "Rapid Spin",
+      "learn_method": "level-up",
+      "level": 21
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "level-up",
+      "level": 14
+    },
+    {
+      "name": "Brick Break",
+      "learn_method": "level-up",
+      "level": 28
+    },
+    {
+      "name": "Knock Off",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "Endeavor",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Rock Tomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bulk Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Shot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Close Combat",
+      "learn_method": "level-up",
+      "level": 63
+    },
+    {
+      "name": "Earth Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "level-up",
+      "level": 56
+    },
+    {
+      "name": "Thunder Fang",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ice Fang",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fire Fang",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flash Cannon",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Iron Head",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stone Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stealth Rock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Head Smash",
+      "learn_method": "level-up",
+      "level": 84
+    },
+    {
+      "name": "Psyshock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Smack Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heavy Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bulldoze",
+      "learn_method": "level-up",
+      "level": 7
+    },
+    {
+      "name": "Play Rough",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "High Horsepower",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Throat Chop",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Smart Strike",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stomping Tantrum",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Body Press",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Headlong Rush",
+      "learn_method": "level-up",
+      "level": 91
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ice Spinner",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Temper Flare",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Supercell Slam",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/984.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/984.png"
+}

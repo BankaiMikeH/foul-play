@@ -1,0 +1,311 @@
+{
+  "id": 488,
+  "name": "cresselia",
+  "display_name": "Cresselia",
+  "types": [
+    "Psychic"
+  ],
+  "base_stats": {
+    "hp": 120,
+    "atk": 70,
+    "def": 110,
+    "spa": 75,
+    "spd": 120,
+    "spe": 85
+  },
+  "abilities": [
+    "Levitate"
+  ],
+  "hidden_ability": null,
+  "height": 15,
+  "weight": 856,
+  "moves": [
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mist",
+      "learn_method": "level-up",
+      "level": 6
+    },
+    {
+      "name": "Ice Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psybeam",
+      "learn_method": "level-up",
+      "level": 18
+    },
+    {
+      "name": "Aurora Beam",
+      "learn_method": "level-up",
+      "level": 12
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Solar Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunderbolt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Confusion",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "level-up",
+      "level": 54
+    },
+    {
+      "name": "Double Team",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Confuse Ray",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reflect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Slash",
+      "learn_method": "level-up",
+      "level": 30
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Slap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Icy Wind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Safeguard",
+      "learn_method": "level-up",
+      "level": 48
+    },
+    {
+      "name": "Moonlight",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psych Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Future Sight",
+      "learn_method": "level-up",
+      "level": 66
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Skill Swap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Gravity",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Power Gem",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Energy Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psycho Cut",
+      "learn_method": "level-up",
+      "level": 36
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick Room",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grass Knot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Charge Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lunar Dance",
+      "learn_method": "level-up",
+      "level": 72
+    },
+    {
+      "name": "Psyshock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stored Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ally Switch",
+      "learn_method": "level-up",
+      "level": 24
+    },
+    {
+      "name": "Moonblast",
+      "learn_method": "level-up",
+      "level": 60
+    },
+    {
+      "name": "Dazzling Gleam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic Terrain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Expanding Force",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lunar Blessing",
+      "learn_method": "level-up",
+      "level": 72
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/488.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/488.png"
+}

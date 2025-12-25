@@ -1,0 +1,402 @@
+{
+  "id": 10194,
+  "name": "calyrexshadow",
+  "display_name": "Calyrex Shadow",
+  "types": [
+    "Psychic",
+    "Ghost"
+  ],
+  "base_stats": {
+    "hp": 100,
+    "atk": 85,
+    "def": 80,
+    "spa": 165,
+    "spd": 100,
+    "spe": 150
+  },
+  "abilities": [
+    "As One Spectrier"
+  ],
+  "hidden_ability": null,
+  "height": 24,
+  "weight": 536,
+  "moves": [
+    {
+      "name": "Pound",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Stomp",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Double Kick",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Tackle",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Thrash",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Tail Whip",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Disable",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psybeam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mega Drain",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Leech Seed",
+      "learn_method": "level-up",
+      "level": 64
+    },
+    {
+      "name": "Growth",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Solar Beam",
+      "learn_method": "level-up",
+      "level": 80
+    },
+    {
+      "name": "Confusion",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "level-up",
+      "level": 56
+    },
+    {
+      "name": "Agility",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Night Shade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Confuse Ray",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Haze",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Reflect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Metronome",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Drain",
+      "learn_method": "level-up",
+      "level": 16
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Baton Pass",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Encore",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Crunch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Ball",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Future Sight",
+      "learn_method": "level-up",
+      "level": 88
+    },
+    {
+      "name": "Will O Wisp",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "level-up",
+      "level": 32
+    },
+    {
+      "name": "Trick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Skill Swap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Imprison",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bullet Seed",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Shot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Magical Leaf",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dark Pulse",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Seed Bomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Energy Ball",
+      "learn_method": "level-up",
+      "level": 48
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick Room",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Leaf Storm",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grass Knot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psyshock",
+      "learn_method": "level-up",
+      "level": 24
+    },
+    {
+      "name": "Foul Play",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stored Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heal Pulse",
+      "learn_method": "level-up",
+      "level": 72
+    },
+    {
+      "name": "Hex",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Bulldoze",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Snarl",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Phantom Force",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Draining Kiss",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grassy Terrain",
+      "learn_method": "level-up",
+      "level": 40
+    },
+    {
+      "name": "Pollen Puff",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic Terrain",
+      "learn_method": "level-up",
+      "level": 40
+    },
+    {
+      "name": "Stomping Tantrum",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Life Dew",
+      "learn_method": "level-up",
+      "level": 8
+    },
+    {
+      "name": "Astral Barrage",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10194.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10194.png"
+}

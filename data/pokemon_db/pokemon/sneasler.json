@@ -1,0 +1,353 @@
+{
+  "id": 903,
+  "name": "sneasler",
+  "display_name": "Sneasler",
+  "types": [
+    "Fighting",
+    "Poison"
+  ],
+  "base_stats": {
+    "hp": 80,
+    "atk": 130,
+    "def": 60,
+    "spa": 40,
+    "spd": 80,
+    "spe": 120
+  },
+  "abilities": [
+    "Pressure",
+    "Unburden"
+  ],
+  "hidden_ability": "Poison Touch",
+  "height": 13,
+  "weight": 430,
+  "moves": [
+    {
+      "name": "Fire Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scratch",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Swords Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Leer",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Low Kick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dig",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Toxic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Agility",
+      "learn_method": "level-up",
+      "level": 48
+    },
+    {
+      "name": "Quick Attack",
+      "learn_method": "level-up",
+      "level": 12
+    },
+    {
+      "name": "Screech",
+      "learn_method": "level-up",
+      "level": 54
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Slide",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Slash",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thief",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reversal",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Spite",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sludge Bomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "False Swipe",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Metal Claw",
+      "learn_method": "level-up",
+      "level": 18
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Smash",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "level-up",
+      "level": 6
+    },
+    {
+      "name": "Brick Break",
+      "learn_method": "level-up",
+      "level": 30
+    },
+    {
+      "name": "Rock Tomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Aerial Ace",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bulk Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Poison Tail",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "U Turn",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Close Combat",
+      "learn_method": "level-up",
+      "level": 60
+    },
+    {
+      "name": "Fling",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Toxic Spikes",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Poison Jab",
+      "learn_method": "level-up",
+      "level": 24
+    },
+    {
+      "name": "X Scissor",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Vacuum Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Focus Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Claw",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Gunk Shot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grass Knot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hone Claws",
+      "learn_method": "level-up",
+      "level": 36
+    },
+    {
+      "name": "Venoshock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sludge Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Low Sweep",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Acid Spray",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Acrobatics",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Throat Chop",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lash Out",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Coaching",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dire Claw",
+      "learn_method": "level-up",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trailblaze",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Upper Hand",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/903.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/903.png"
+}

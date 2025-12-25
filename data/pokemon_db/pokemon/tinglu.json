@@ -1,0 +1,257 @@
+{
+  "id": 1003,
+  "name": "tinglu",
+  "display_name": "Ting Lu",
+  "types": [
+    "Dark",
+    "Ground"
+  ],
+  "base_stats": {
+    "hp": 155,
+    "atk": 110,
+    "def": 125,
+    "spa": 55,
+    "spd": 80,
+    "spe": 45
+  },
+  "abilities": [
+    "Vessel Of Ruin"
+  ],
+  "hidden_ability": null,
+  "height": 27,
+  "weight": 6997,
+  "moves": [
+    {
+      "name": "Whirlwind",
+      "learn_method": "level-up",
+      "level": 25
+    },
+    {
+      "name": "Stomp",
+      "learn_method": "level-up",
+      "level": 15
+    },
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thrash",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earthquake",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Fissure",
+      "learn_method": "level-up",
+      "level": 75
+    },
+    {
+      "name": "Dig",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Slide",
+      "learn_method": "level-up",
+      "level": 60
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Spite",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scary Face",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mud Slap",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Spikes",
+      "learn_method": "level-up",
+      "level": 5
+    },
+    {
+      "name": "Sandstorm",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mean Look",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Memento",
+      "learn_method": "level-up",
+      "level": 65
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "level-up",
+      "level": 30
+    },
+    {
+      "name": "Rock Tomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sand Tomb",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Mud Shot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Payback",
+      "learn_method": "level-up",
+      "level": 10
+    },
+    {
+      "name": "Dark Pulse",
+      "learn_method": "level-up",
+      "level": 40
+    },
+    {
+      "name": "Earth Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stone Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stealth Rock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heavy Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hex",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bulldoze",
+      "learn_method": "level-up",
+      "level": 20
+    },
+    {
+      "name": "Snarl",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Throat Chop",
+      "learn_method": "level-up",
+      "level": 55
+    },
+    {
+      "name": "Stomping Tantrum",
+      "learn_method": "level-up",
+      "level": 45
+    },
+    {
+      "name": "Body Press",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lash Out",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ruination",
+      "learn_method": "level-up",
+      "level": 50
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1003.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1003.png"
+}

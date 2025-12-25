@@ -1,0 +1,327 @@
+{
+  "id": 324,
+  "name": "torkoal",
+  "display_name": "Torkoal",
+  "types": [
+    "Fire"
+  ],
+  "base_stats": {
+    "hp": 70,
+    "atk": 85,
+    "def": 140,
+    "spa": 85,
+    "spd": 70,
+    "spe": 20
+  },
+  "abilities": [
+    "White Smoke",
+    "Drought"
+  ],
+  "hidden_ability": "Shell Armor",
+  "height": 5,
+  "weight": 804,
+  "moves": [
+    {
+      "name": "Body Slam",
+      "learn_method": "level-up",
+      "level": 32
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ember",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Flamethrower",
+      "learn_method": "level-up",
+      "level": 40
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Solar Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fire Spin",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earthquake",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fissure",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Smokescreen",
+      "learn_method": "level-up",
+      "level": 12
+    },
+    {
+      "name": "Withdraw",
+      "learn_method": "level-up",
+      "level": 4
+    },
+    {
+      "name": "Smog",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Fire Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Amnesia",
+      "learn_method": "level-up",
+      "level": 52
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Slide",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flame Wheel",
+      "learn_method": "level-up",
+      "level": 20
+    },
+    {
+      "name": "Curse",
+      "learn_method": "level-up",
+      "level": 44
+    },
+    {
+      "name": "Flail",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "level-up",
+      "level": 24
+    },
+    {
+      "name": "Sludge Bomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sandstorm",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rapid Spin",
+      "learn_method": "level-up",
+      "level": 8
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Ancient Power",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Heat Wave",
+      "learn_method": "level-up",
+      "level": 48
+    },
+    {
+      "name": "Will O Wisp",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Yawn",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Eruption",
+      "learn_method": "level-up",
+      "level": 64
+    },
+    {
+      "name": "Weather Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Overheat",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rock Tomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Iron Defense",
+      "learn_method": "level-up",
+      "level": 36
+    },
+    {
+      "name": "Gyro Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flare Blitz",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Earth Power",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Lava Plume",
+      "learn_method": "level-up",
+      "level": 28
+    },
+    {
+      "name": "Stone Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stealth Rock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heavy Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flame Charge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Clear Smog",
+      "learn_method": "level-up",
+      "level": 16
+    },
+    {
+      "name": "Shell Smash",
+      "learn_method": "level-up",
+      "level": 60
+    },
+    {
+      "name": "Inferno",
+      "learn_method": "level-up",
+      "level": 56
+    },
+    {
+      "name": "Bulldoze",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heat Crash",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Stomping Tantrum",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Body Press",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Burning Jealousy",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Scorching Sands",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Temper Flare",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/324.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/324.png"
+}

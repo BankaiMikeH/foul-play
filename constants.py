@@ -9,6 +9,51 @@ class BattleType(StrEnum):
 
 NO_TEAM_PREVIEW_GENS = {"gen1", "gen2", "gen3", "gen4"}
 
+# Doubles Battle Constants
+DOUBLES_BATTLE = "doubles_battle"
+POSITION_LEFT = 0
+POSITION_RIGHT = 1
+
+# Doubles position identifiers in Pokemon Showdown protocol
+# p1a = player 1, position a (left)
+# p1b = player 1, position b (right)
+# p2a = player 2, position a (left)
+# p2b = player 2, position b (right)
+POSITION_CHARS = ["a", "b"]
+
+# Doubles formats
+DOUBLES_FORMATS = {
+    "gen9vgc2024",
+    "gen9vgc2024regg",
+    "gen9vgc2024regf",
+    "gen9vgc2024rege",
+    "gen9vgc2025regh",
+    "gen9vgc2025regi",
+    "gen9vgc2025regj",
+    "gen9vgc2026regf",
+    "gen9vgc2026regfbo3",  # Pokemon Showdown native Bo3 format
+    "gen9doublesou",
+    "gen8vgc2022",
+    "gen8vgc2021",
+    "gen8doublesou",
+    "gen7vgc2019",
+    "gen7vgc2018",
+    "gen7doublesou",
+    "gen6vgc2016",
+    "gen6doublesou",
+    "gen5doublesou",
+    "gen4doublesou",
+    "gen3doublesou",
+}
+
+# Targeting in Doubles
+# These values are used in the /choose command
+TARGET_RANDOM = -2  # Let the game choose (for moves that can't target)
+TARGET_SELF = -1  # Self-target
+TARGET_ALLY = 0  # Your partner Pokemon
+TARGET_LEFT_OPPONENT = 1  # Left opponent Pokemon
+TARGET_RIGHT_OPPONENT = 2  # Right opponent Pokemon
+
 START_STRING = "|start"
 RQID = "rqid"
 TEAM_PREVIEW_POKE = "poke"

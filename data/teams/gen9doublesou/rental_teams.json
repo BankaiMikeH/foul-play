@@ -1,0 +1,237 @@
+{
+  "format": "gen9doublesou",
+  "description": "Competitive Gen 9 Doubles OU teams",
+  "last_updated": "2025-11-26",
+  "teams": [
+    {
+      "id": "dou_balance_1",
+      "name": "Balanced Goodstuff",
+      "archetype": "Balanced",
+      "author": "Smogon Community",
+      "winrate": 0.55,
+      "usage_rank": 3,
+      "paste": "https://pokepast.es/dou_example1",
+      "description": "Well-rounded team with good type coverage",
+      "core": ["Landorus-Therian", "Gholdengo", "Incineroar"],
+      "pokemon": [
+        {
+          "species": "Landorus-Therian",
+          "ability": "Intimidate",
+          "item": "Choice Scarf",
+          "tera_type": "Flying",
+          "nature": "Jolly",
+          "evs": {"hp": 4, "atk": 252, "def": 0, "spa": 0, "spd": 0, "spe": 252},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Earthquake", "Rock Slide", "U-turn", "Superpower"]
+        },
+        {
+          "species": "Gholdengo",
+          "ability": "Good as Gold",
+          "item": "Air Balloon",
+          "tera_type": "Steel",
+          "nature": "Timid",
+          "evs": {"hp": 4, "atk": 0, "def": 0, "spa": 252, "spd": 0, "spe": 252},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+          "moves": ["Make It Rain", "Shadow Ball", "Protect", "Nasty Plot"]
+        },
+        {
+          "species": "Incineroar",
+          "ability": "Intimidate",
+          "item": "Assault Vest",
+          "tera_type": "Ghost",
+          "nature": "Careful",
+          "evs": {"hp": 252, "atk": 4, "def": 0, "spa": 0, "spd": 252, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Fake Out", "Knock Off", "Flare Blitz", "U-turn"]
+        },
+        {
+          "species": "Rillaboom",
+          "ability": "Grassy Surge",
+          "item": "Miracle Seed",
+          "tera_type": "Fire",
+          "nature": "Adamant",
+          "evs": {"hp": 252, "atk": 252, "def": 0, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Fake Out", "Grassy Glide", "Wood Hammer", "U-turn"]
+        },
+        {
+          "species": "Pelipper",
+          "ability": "Drizzle",
+          "item": "Damp Rock",
+          "tera_type": "Ghost",
+          "nature": "Modest",
+          "evs": {"hp": 252, "atk": 0, "def": 4, "spa": 252, "spd": 0, "spe": 0},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+          "moves": ["Hurricane", "Weather Ball", "Tailwind", "Protect"]
+        },
+        {
+          "species": "Kingambit",
+          "ability": "Defiant",
+          "item": "Black Glasses",
+          "tera_type": "Dark",
+          "nature": "Adamant",
+          "evs": {"hp": 252, "atk": 252, "def": 0, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Kowtow Cleave", "Sucker Punch", "Iron Head", "Protect"]
+        }
+      ]
+    },
+    {
+      "id": "dou_tailwind_1",
+      "name": "Tailwind Offense",
+      "archetype": "Speed Control",
+      "author": "Smogon Community",
+      "winrate": 0.60,
+      "usage_rank": 5,
+      "paste": "https://pokepast.es/dou_example2",
+      "description": "Fast offensive team with Tailwind support",
+      "core": ["Tornadus", "Dragonite", "Garchomp"],
+      "pokemon": [
+        {
+          "species": "Tornadus",
+          "ability": "Prankster",
+          "item": "Covert Cloak",
+          "tera_type": "Ghost",
+          "nature": "Timid",
+          "evs": {"hp": 4, "atk": 0, "def": 0, "spa": 252, "spd": 0, "spe": 252},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+          "moves": ["Tailwind", "Bleakwind Storm", "Taunt", "Rain Dance"]
+        },
+        {
+          "species": "Dragonite",
+          "ability": "Multiscale",
+          "item": "Choice Band",
+          "tera_type": "Normal",
+          "nature": "Adamant",
+          "evs": {"hp": 4, "atk": 252, "def": 0, "spa": 0, "spd": 0, "spe": 252},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Extreme Speed", "Outrage", "Earthquake", "Tera Blast"]
+        },
+        {
+          "species": "Garchomp",
+          "ability": "Rough Skin",
+          "item": "Life Orb",
+          "tera_type": "Steel",
+          "nature": "Jolly",
+          "evs": {"hp": 4, "atk": 252, "def": 0, "spa": 0, "spd": 0, "spe": 252},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Earthquake", "Dragon Claw", "Rock Slide", "Protect"]
+        },
+        {
+          "species": "Volcarona",
+          "ability": "Flame Body",
+          "item": "Heavy-Duty Boots",
+          "tera_type": "Grass",
+          "nature": "Timid",
+          "evs": {"hp": 4, "atk": 0, "def": 0, "spa": 252, "spd": 0, "spe": 252},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+          "moves": ["Heat Wave", "Giga Drain", "Bug Buzz", "Protect"]
+        },
+        {
+          "species": "Incineroar",
+          "ability": "Intimidate",
+          "item": "Sitrus Berry",
+          "tera_type": "Ghost",
+          "nature": "Careful",
+          "evs": {"hp": 252, "atk": 4, "def": 0, "spa": 0, "spd": 252, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Fake Out", "Knock Off", "Flare Blitz", "Parting Shot"]
+        },
+        {
+          "species": "Amoonguss",
+          "ability": "Regenerator",
+          "item": "Rocky Helmet",
+          "tera_type": "Steel",
+          "nature": "Calm",
+          "evs": {"hp": 252, "atk": 0, "def": 0, "spa": 0, "spd": 252, "spe": 4},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+          "moves": ["Spore", "Rage Powder", "Pollen Puff", "Clear Smog"]
+        }
+      ]
+    },
+    {
+      "id": "dou_trick_room_1",
+      "name": "Trick Room Control",
+      "archetype": "Trick Room",
+      "author": "Smogon Community",
+      "winrate": 0.58,
+      "usage_rank": 7,
+      "paste": "https://pokepast.es/dou_example3",
+      "description": "Trick Room team with powerful slow attackers",
+      "core": ["Cresselia", "Tyranitar", "Conkeldurr"],
+      "pokemon": [
+        {
+          "species": "Cresselia",
+          "ability": "Levitate",
+          "item": "Safety Goggles",
+          "tera_type": "Poison",
+          "nature": "Relaxed",
+          "evs": {"hp": 252, "atk": 0, "def": 252, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 0},
+          "moves": ["Trick Room", "Lunar Blessing", "Psychic", "Helping Hand"]
+        },
+        {
+          "species": "Tyranitar",
+          "ability": "Sand Stream",
+          "item": "Assault Vest",
+          "tera_type": "Flying",
+          "nature": "Brave",
+          "evs": {"hp": 252, "atk": 252, "def": 0, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 0},
+          "moves": ["Rock Slide", "Knock Off", "High Horsepower", "Low Kick"]
+        },
+        {
+          "species": "Conkeldurr",
+          "ability": "Guts",
+          "item": "Flame Orb",
+          "tera_type": "Steel",
+          "nature": "Brave",
+          "evs": {"hp": 252, "atk": 252, "def": 0, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 0},
+          "moves": ["Drain Punch", "Mach Punch", "Ice Punch", "Knock Off"]
+        },
+        {
+          "species": "Scizor",
+          "ability": "Technician",
+          "item": "Life Orb",
+          "tera_type": "Fire",
+          "nature": "Adamant",
+          "evs": {"hp": 252, "atk": 252, "def": 0, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Bullet Punch", "Bug Bite", "Close Combat", "Protect"]
+        },
+        {
+          "species": "Incineroar",
+          "ability": "Intimidate",
+          "item": "Sitrus Berry",
+          "tera_type": "Ghost",
+          "nature": "Careful",
+          "evs": {"hp": 252, "atk": 4, "def": 0, "spa": 0, "spd": 252, "spe": 0},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 0, "spd": 31, "spe": 31},
+          "moves": ["Fake Out", "Knock Off", "Flare Blitz", "Parting Shot"]
+        },
+        {
+          "species": "Amoonguss",
+          "ability": "Regenerator",
+          "item": "Rocky Helmet",
+          "tera_type": "Steel",
+          "nature": "Relaxed",
+          "evs": {"hp": 252, "atk": 0, "def": 252, "spa": 0, "spd": 4, "spe": 0},
+          "ivs": {"hp": 31, "atk": 0, "def": 31, "spa": 31, "spd": 31, "spe": 0},
+          "moves": ["Spore", "Rage Powder", "Pollen Puff", "Clear Smog"]
+        }
+      ]
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+

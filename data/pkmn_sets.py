@@ -581,6 +581,65 @@ class _SmogonSets(PokemonSets):
             n.startswith(normalized_name) for n in list_of_pkmn_names
         )
 
+    def _get_pokemon_information_from_local_db(self, pkmn_names: set[str]) -> dict:
+        """
+        Get Pokemon information from local Pokemon database (built from PokeAPI)
+        
+        This replaces Smogon API calls for VGC/Doubles formats where we use preset teams.
+        Returns minimal structure needed for battle initialization.
+        
+        Args:
+            pkmn_names: Set of Pokemon names to load
+        
+        Returns:
+            Dict with Pokemon data in format compatible with _initialize()
+        """
+        try:
+            from data.pokemon_db_loader import get_pokemon_db
+        except ImportError:
+            raise ImportError("Pokemon database not available. Run: python data/scripts/build_pokemon_db.py --vgc")
+        
+        db = get_pokemon_db()
+        
+        if not db.is_available():
+            raise ValueError("Pokemon database is empty. Run: python data/scripts/build_pokemon_db.py --vgc")
+        
+        logger.info(f"Loading {len(pkmn_names)} Pokemon from local database")
+        
+        infos = {}
+        missing_pokemon = []
+        
+        for pkmn_name in pkmn_names:
+            pokemon_data = db.get_pokemon(pkmn_name)
+            
+            if not pokemon_data:
+                missing_pokemon.append(pkmn_name)
+                logger.warning(f"Pokemon '{pkmn_name}' not in local database")
+                continue
+            
+            # Create minimal structure that _get_pokemon_information expects
+            # For VGC with preset teams, we don't need usage stats, just basic info
+            infos[pkmn_name] = {
+                "Raw count": 1000,  # Dummy count
+                "Abilities": {pokemon_data['abilities'][0]: 1000} if pokemon_data['abilities'] else {},
+                "Items": {},  # Will be set by team_dict
+                "Spreads": {},  # Will be set by team_dict
+                "Moves": {},  # Will be set by team_dict
+                "Teammates": {},
+                "Checks and Counters": {},
+                "Tera Types": {},
+                # Store base stats for reference
+                "_base_stats": pokemon_data['base_stats'],
+                "_types": pokemon_data['types']
+            }
+        
+        if missing_pokemon:
+            logger.warning(f"Missing Pokemon: {', '.join(missing_pokemon)}")
+            logger.warning("To add them: python data/scripts/build_pokemon_db.py --names " + ','.join(missing_pokemon))
+        
+        logger.info(f"Loaded {len(infos)}/{len(pkmn_names)} Pokemon from local database")
+        return infos
+    
     def _get_smogon_stats_json(self, smogon_stats_url):
         cache_file_name = ntpath.basename(smogon_stats_url)
         cache_file = os.path.join(SMOGON_CACHE_DIR, cache_file_name)
@@ -760,6 +819,19 @@ class _SmogonSets(PokemonSets):
 
     def initialize(self, pkmn_mode: str, pkmn_names: set[str]):
         self.pkmn_mode = pkmn_mode
+        
+        # For VGC/Doubles formats, try local database first
+        if any(fmt in pkmn_mode.lower() for fmt in ['vgc', 'doubles', 'bss']):
+            logger.info("VGC/Doubles format detected, using local Pokemon database")
+            try:
+                self.raw_pkmn_sets = self._get_pokemon_information_from_local_db(pkmn_names)
+                self.current_pkmn_sets_url = f"local_db_{pkmn_mode}"
+                self._initialize(self.raw_pkmn_sets)
+                return
+            except Exception as e:
+                logger.warning(f"Local database failed: {e}, falling back to Smogon API")
+        
+        # Original Smogon API path
         smogon_stats_url = self._get_smogon_stats_file_name(pkmn_mode)
         if self.current_pkmn_sets_url != smogon_stats_url:
             self.raw_pkmn_sets = self._get_pokemon_information(

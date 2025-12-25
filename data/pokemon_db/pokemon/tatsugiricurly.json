@@ -1,0 +1,207 @@
+{
+  "id": 978,
+  "name": "tatsugiricurly",
+  "display_name": "Tatsugiri Curly",
+  "types": [
+    "Dragon",
+    "Water"
+  ],
+  "base_stats": {
+    "hp": 68,
+    "atk": 50,
+    "def": 60,
+    "spa": 120,
+    "spd": 95,
+    "spe": 82
+  },
+  "abilities": [
+    "Commander"
+  ],
+  "hidden_ability": "Storm Drain",
+  "height": 3,
+  "weight": 80,
+  "moves": [
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Water Gun",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Hydro Pump",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Surf",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Counter",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Harden",
+      "learn_method": "level-up",
+      "level": 6
+    },
+    {
+      "name": "Splash",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Icy Wind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Outrage",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Baton Pass",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Rapid Spin",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Mirror Coat",
+      "learn_method": "level-up",
+      "level": 47
+    },
+    {
+      "name": "Whirlpool",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Memento",
+      "learn_method": "level-up",
+      "level": 34
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "level-up",
+      "level": 28
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "level-up",
+      "level": 12
+    },
+    {
+      "name": "Muddy Water",
+      "learn_method": "level-up",
+      "level": 39
+    },
+    {
+      "name": "Dragon Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Water Pulse",
+      "learn_method": "level-up",
+      "level": 17
+    },
+    {
+      "name": "Dragon Pulse",
+      "learn_method": "level-up",
+      "level": 52
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "level-up",
+      "level": 43
+    },
+    {
+      "name": "Draco Meteor",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Soak",
+      "learn_method": "level-up",
+      "level": 23
+    },
+    {
+      "name": "Lunge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Chilling Water",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dragon Cheer",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/978.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/978.png"
+}

@@ -1,0 +1,307 @@
+{
+  "id": 637,
+  "name": "volcarona",
+  "display_name": "Volcarona",
+  "types": [
+    "Bug",
+    "Fire"
+  ],
+  "base_stats": {
+    "hp": 85,
+    "atk": 60,
+    "def": 65,
+    "spa": 135,
+    "spd": 105,
+    "spe": 100
+  },
+  "abilities": [
+    "Flame Body"
+  ],
+  "hidden_ability": "Swarm",
+  "height": 16,
+  "weight": 460,
+  "moves": [
+    {
+      "name": "Gust",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Whirlwind",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Fly",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Body Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Ember",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Flamethrower",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Solar Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "String Shot",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Fire Spin",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Screech",
+      "learn_method": "level-up",
+      "level": 30
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fire Blast",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Amnesia",
+      "learn_method": "level-up",
+      "level": 54
+    },
+    {
+      "name": "Leech Life",
+      "learn_method": "level-up",
+      "level": 36
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flame Wheel",
+      "learn_method": "level-up",
+      "level": 18
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Drain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heat Wave",
+      "learn_method": "level-up",
+      "level": 48
+    },
+    {
+      "name": "Will O Wisp",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Air Cutter",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Overheat",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Calm Mind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tailwind",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "U Turn",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flare Blitz",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Poison Jab",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Air Slash",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bug Buzz",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Zen Headbutt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Bug Bite",
+      "learn_method": "level-up",
+      "level": 24
+    },
+    {
+      "name": "Rage Powder",
+      "learn_method": "level-up",
+      "level": 78
+    },
+    {
+      "name": "Quiver Dance",
+      "learn_method": "level-up",
+      "level": 0
+    },
+    {
+      "name": "Flame Charge",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Acrobatics",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Struggle Bug",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Wild Charge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hurricane",
+      "learn_method": "level-up",
+      "level": 62
+    },
+    {
+      "name": "Fiery Dance",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Lunge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Skitter Smack",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dual Wingbeat",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Pounce",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trailblaze",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/637.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/637.png"
+}

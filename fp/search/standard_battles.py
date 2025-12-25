@@ -1,6 +1,7 @@
 import logging
 import random
 from copy import deepcopy
+from typing import Dict, Optional
 
 import constants
 from data import all_move_json
@@ -19,6 +20,7 @@ from data.pkmn_sets import (
     RAW_COUNT,
     TEAMMATES,
 )
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -286,6 +288,62 @@ def sample_pokemon_moveset_with_known_pkmn_set(pkmn: Pokemon, pkmn_set: PokemonS
     return pkmn_known_moves
 
 
+def convert_unpacked_set_to_predicted_set(
+    unpacked_set: Dict, pkmn_name: str
+) -> Optional[PredictedPokemonSet]:
+    """
+    Convert unpacked team data (from showteam message) to PredictedPokemonSet format.
+    
+    Args:
+        unpacked_set: Dictionary from unpack_team containing Pokemon set data
+        pkmn_name: Name of the Pokemon to match (for validation)
+        
+    Returns:
+        PredictedPokemonSet or None if conversion fails
+    """
+    try:
+        # Extract data from unpacked set
+        species = unpacked_set.get('species', '')
+        item = unpacked_set.get('item', '') or None
+        ability = unpacked_set.get('ability', '') or None
+        moves = unpacked_set.get('moves', [])
+        nature = unpacked_set.get('nature', '') or 'serious'
+        evs = unpacked_set.get('evs', (0, 0, 0, 0, 0, 0))
+        tera_type = unpacked_set.get('tera_type')
+        
+        # Ensure evs is a tuple of 6 integers
+        if isinstance(evs, (list, tuple)):
+            evs = tuple(int(v) for v in evs[:6])
+            while len(evs) < 6:
+                evs = evs + (0,)
+        else:
+            evs = (0, 0, 0, 0, 0, 0)
+        
+        # Create PokemonSet
+        pkmn_set = PokemonSet(
+            ability=ability or '',
+            item=item or '',
+            nature=nature,
+            evs=evs,
+            count=1,  # Open team sheets are exact sets, so count is 1
+            tera_type=tera_type,
+        )
+        
+        # Create PokemonMoveset
+        pkmn_moveset = PokemonMoveset(moves=tuple(moves), count=1)
+        
+        # Create PredictedPokemonSet
+        predicted_set = PredictedPokemonSet(
+            pkmn_set=pkmn_set,
+            pkmn_moveset=pkmn_moveset,
+        )
+        
+        return predicted_set
+    except Exception as e:
+        logger.warning(f"Error converting unpacked set to PredictedPokemonSet: {e}")
+        return None
+
+
 def set_most_likely_hidden_power(pkmn: Pokemon):
     # hidden power type isn't revealed so if the pokemon used hiddenpower it should
     # be replaced by the most likely hiddenpower that is still possible
@@ -467,15 +525,93 @@ def sample_mega_evolution(battler: Battler, index: int):
 
 def prepare_battles(battle: Battle, num_battles: int) -> list[(Battle, float)]:
     sampled_battles = []
+    
+    # Check if we're in Bo3 format with open team sheets
+    is_bo3_format = battle.pokemon_format and "bo3" in battle.pokemon_format.lower()
+    has_open_team_sheets = (
+        hasattr(battle, 'opponent_open_team_sets') and
+        battle.opponent_open_team_sets is not None and
+        len(battle.opponent_open_team_sets) > 0
+    )
+    
+    if is_bo3_format and has_open_team_sheets:
+        logger.info(f"Using open team sheets for Bo3 format: {len(battle.opponent_open_team_sets)} Pokemon sets available")
+    
     for index in range(num_battles):
         logger.info("Sampling battle {}".format(index))
         battle_copy = deepcopy(battle)
         if battle_copy.mega_evolve_possible():
             sample_mega_evolution(battle_copy.opponent, index)
 
-        sample_pokemon(battle_copy.opponent.active)
-        for pkmn in filter(lambda x: x.is_alive(), battle_copy.opponent.reserve):
-            sample_pokemon(pkmn)
+        # Use open team sheets if available in Bo3 format, otherwise sample
+        if is_bo3_format and has_open_team_sheets:
+            # Match Pokemon from battle to sets from open team sheets
+            all_opponent_pokemon = []
+            
+            # Collect all opponent Pokemon (active and reserve)
+            if isinstance(battle_copy.opponent.active, list):
+                # Doubles
+                for pkmn in battle_copy.opponent.active:
+                    if pkmn is not None:
+                        all_opponent_pokemon.append(pkmn)
+            else:
+                # Singles
+                if battle_copy.opponent.active is not None:
+                    all_opponent_pokemon.append(battle_copy.opponent.active)
+            
+            for pkmn in filter(lambda x: x.is_alive(), battle_copy.opponent.reserve):
+                all_opponent_pokemon.append(pkmn)
+            
+            # Match each Pokemon to a set from open team sheets
+            used_sets = set()  # Track which sets we've already used
+            for pkmn in all_opponent_pokemon:
+                matched_set = None
+                
+                # Try to find matching set by species/name
+                for i, team_set in enumerate(battle_copy.opponent_open_team_sets):
+                    if i in used_sets:
+                        continue
+                    
+                    set_species = team_set.get('species', '').lower()
+                    set_name = team_set.get('name', '').lower()
+                    pkmn_name_normalized = pkmn.name.lower()
+                    pkmn_base_name_normalized = pkmn.base_name.lower() if hasattr(pkmn, 'base_name') else pkmn_name_normalized
+                    
+                    # Match by species or name
+                    if (set_species == pkmn_name_normalized or 
+                        set_species == pkmn_base_name_normalized or
+                        set_name == pkmn_name_normalized or
+                        set_name == pkmn_base_name_normalized):
+                        matched_set = team_set
+                        used_sets.add(i)
+                        break
+                
+                if matched_set:
+                    # Convert and apply the set
+                    predicted_set = convert_unpacked_set_to_predicted_set(matched_set, pkmn.name)
+                    if predicted_set:
+                        populate_pkmn_from_set(pkmn, predicted_set, source="openteamsheets-bo3")
+                    else:
+                        logger.warning(f"Failed to convert open team sheet set for {pkmn.name}, falling back to sampling")
+                        sample_pokemon(pkmn)
+                else:
+                    logger.warning(f"No matching open team sheet set found for {pkmn.name}, falling back to sampling")
+                    sample_pokemon(pkmn)
+        else:
+            # Normal sampling path (no open team sheets or not Bo3 format)
+            # Handle both singles (single Pokemon) and doubles (list of Pokemon)
+            if isinstance(battle_copy.opponent.active, list):
+                # Doubles - sample each active Pokemon
+                for pkmn in battle_copy.opponent.active:
+                    if pkmn is not None:
+                        sample_pokemon(pkmn)
+            else:
+                # Singles - sample the single active Pokemon
+                if battle_copy.opponent.active is not None:
+                    sample_pokemon(battle_copy.opponent.active)
+            
+            for pkmn in filter(lambda x: x.is_alive(), battle_copy.opponent.reserve):
+                sample_pokemon(pkmn)
 
         if battle.generation in constants.NO_TEAM_PREVIEW_GENS:
             populate_standardbattle_unrevealed_pkmn(battle_copy)

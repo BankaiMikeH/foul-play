@@ -1,0 +1,293 @@
+{
+  "id": 547,
+  "name": "whimsicott",
+  "display_name": "Whimsicott",
+  "types": [
+    "Grass",
+    "Fairy"
+  ],
+  "base_stats": {
+    "hp": 60,
+    "atk": 67,
+    "def": 85,
+    "spa": 77,
+    "spd": 75,
+    "spe": 116
+  },
+  "abilities": [
+    "Prankster",
+    "Infiltrator"
+  ],
+  "hidden_ability": "Chlorophyll",
+  "height": 7,
+  "weight": 66,
+  "moves": [
+    {
+      "name": "Gust",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Absorb",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Mega Drain",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Leech Seed",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Growth",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Razor Leaf",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Solar Beam",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Poison Powder",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Stun Spore",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thief",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Cotton Spore",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Drain",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Charm",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Encore",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Shadow Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Beat Up",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Memento",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Helping Hand",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Endeavor",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Fake Tears",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tickle",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Tailwind",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "U Turn",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fling",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Worry Seed",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Seed Bomb",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Energy Ball",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Switcheroo",
+      "learn_method": "egg",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick Room",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grass Knot",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Cotton Guard",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Hurricane",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Grassy Terrain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Misty Terrain",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Play Rough",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fairy Wind",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Moonblast",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Dazzling Gleam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Grassy Glide",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/547.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/547.png"
+}

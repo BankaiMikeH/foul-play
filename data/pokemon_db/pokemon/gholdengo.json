@@ -1,0 +1,252 @@
+{
+  "id": 1000,
+  "name": "gholdengo",
+  "display_name": "Gholdengo",
+  "types": [
+    "Steel",
+    "Ghost"
+  ],
+  "base_stats": {
+    "hp": 87,
+    "atk": 60,
+    "def": 95,
+    "spa": 133,
+    "spd": 91,
+    "spe": 84
+  },
+  "abilities": [
+    "Good As Gold"
+  ],
+  "hidden_ability": null,
+  "height": 12,
+  "weight": 300,
+  "moves": [
+    {
+      "name": "Thunder Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tackle",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Low Kick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunderbolt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thunder",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psychic",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Night Shade",
+      "learn_method": "level-up",
+      "level": 7
+    },
+    {
+      "name": "Recover",
+      "learn_method": "level-up",
+      "level": 42
+    },
+    {
+      "name": "Confuse Ray",
+      "learn_method": "level-up",
+      "level": 14
+    },
+    {
+      "name": "Light Screen",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Reflect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "level-up",
+      "level": 21
+    },
+    {
+      "name": "Thief",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sandstorm",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Shadow Ball",
+      "learn_method": "level-up",
+      "level": 35
+    },
+    {
+      "name": "Memento",
+      "learn_method": "level-up",
+      "level": 70
+    },
+    {
+      "name": "Focus Punch",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Trick",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Astonish",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Metal Sound",
+      "learn_method": "level-up",
+      "level": 28
+    },
+    {
+      "name": "Fling",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Power Gem",
+      "learn_method": "level-up",
+      "level": 49
+    },
+    {
+      "name": "Focus Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Nasty Plot",
+      "learn_method": "level-up",
+      "level": 63
+    },
+    {
+      "name": "Flash Cannon",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Iron Head",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Charge Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Psyshock",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heavy Slam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Electro Ball",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Low Sweep",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hex",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dazzling Gleam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Steel Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Poltergeist",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Make It Rain",
+      "learn_method": "level-up",
+      "level": 56
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1000.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1000.png"
+}

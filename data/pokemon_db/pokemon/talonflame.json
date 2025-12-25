@@ -1,0 +1,272 @@
+{
+  "id": 663,
+  "name": "talonflame",
+  "display_name": "Talonflame",
+  "types": [
+    "Fire",
+    "Flying"
+  ],
+  "base_stats": {
+    "hp": 78,
+    "atk": 81,
+    "def": 71,
+    "spa": 74,
+    "spd": 69,
+    "spe": 126
+  },
+  "abilities": [
+    "Flame Body"
+  ],
+  "hidden_ability": "Gale Wings",
+  "height": 12,
+  "weight": 245,
+  "moves": [
+    {
+      "name": "Swords Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fly",
+      "learn_method": "level-up",
+      "level": 74
+    },
+    {
+      "name": "Take Down",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Double Edge",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Growl",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Ember",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Flamethrower",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Hyper Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Peck",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Solar Beam",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Fire Spin",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Agility",
+      "learn_method": "level-up",
+      "level": 29
+    },
+    {
+      "name": "Quick Attack",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Fire Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Swift",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rest",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Substitute",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Thief",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flail",
+      "learn_method": "level-up",
+      "level": 15
+    },
+    {
+      "name": "Protect",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Endure",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Steel Wing",
+      "learn_method": "level-up",
+      "level": 56
+    },
+    {
+      "name": "Sleep Talk",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Rain Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Sunny Day",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Heat Wave",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Will O Wisp",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Facade",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Taunt",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Feather Dance",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Air Cutter",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Overheat",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Aerial Ace",
+      "learn_method": "level-up",
+      "level": 38
+    },
+    {
+      "name": "Bulk Up",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Roost",
+      "learn_method": "level-up",
+      "level": 65
+    },
+    {
+      "name": "Feint",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Tailwind",
+      "learn_method": "level-up",
+      "level": 47
+    },
+    {
+      "name": "U Turn",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flare Blitz",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Air Slash",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Brave Bird",
+      "learn_method": "level-up",
+      "level": 83
+    },
+    {
+      "name": "Giga Impact",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Flame Charge",
+      "learn_method": "level-up",
+      "level": 1
+    },
+    {
+      "name": "Acrobatics",
+      "learn_method": "level-up",
+      "level": 22
+    },
+    {
+      "name": "Hurricane",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Dual Wingbeat",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Tera Blast",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Temper Flare",
+      "learn_method": "machine",
+      "level": 0
+    },
+    {
+      "name": "Upper Hand",
+      "learn_method": "machine",
+      "level": 0
+    }
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/663.png",
+  "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/663.png"
+}
