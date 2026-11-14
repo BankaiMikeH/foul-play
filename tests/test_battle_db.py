@@ -29,8 +29,12 @@ class TestParser(unittest.TestCase):
         p1 = self.b.teams["p1"]
         self.assertEqual(len(p1), 6)
         brought = {s for s, m in p1.items() if m.brought}
-        self.assertEqual(brought, {"Incineroar", "Flutter Mane", "Urshifu-Rapid-Strike", "Amoonguss"})
-        self.assertNotIn("Urshifu", p1)  # wildcard preview forme replaced by the real one
+        self.assertEqual(
+            brought, {"Incineroar", "Flutter Mane", "Urshifu-Rapid-Strike", "Amoonguss"}
+        )
+        self.assertNotIn(
+            "Urshifu", p1
+        )  # wildcard preview forme replaced by the real one
         leads = {s for s, m in p1.items() if m.lead}
         self.assertEqual(leads, {"Incineroar", "Flutter Mane"})
         self.assertEqual(p1["Flutter Mane"].tera_type, "Fairy")
@@ -49,14 +53,21 @@ class TestParser(unittest.TestCase):
         self.assertIsNone(protect_fail.target_side)
 
     def test_switch_kinds(self):
-        kinds = [(a.turn, a.side, a.actor, a.kind) for a in self.b.actions if a.kind != "move"]
+        kinds = [
+            (a.turn, a.side, a.actor, a.kind)
+            for a in self.b.actions
+            if a.kind != "move"
+        ]
         self.assertIn((1, "p1", "Urshifu-Rapid-Strike", "replacement"), kinds)
         self.assertIn((3, "p1", "Amoonguss", "switch"), kinds)
         self.assertIn((0, "p2", "Tornadus", "lead"), kinds)
         self.assertIn((1, "p1", "Flutter Mane", "tera"), kinds)
 
     def test_client_log_prefix_is_stripped(self):
-        prefixed = "\n".join(f"[2026-11-14 10:00:00.000] (+1.000s) {l}" for l in load_fixture().splitlines())
+        prefixed = "\n".join(
+            f"[2026-11-14 10:00:00.000] (+1.000s) {line}"
+            for line in load_fixture().splitlines()
+        )
         b = parse_log(prefixed)
         self.assertEqual(b.winner_side, "p1")
         self.assertEqual(len(b.actions), len(self.b.actions))
@@ -72,7 +83,11 @@ class TestStoreAndPriors(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_add_is_deduplicated(self):
-        self.assertIsNotNone(self.store.add_battle("x-1", load_fixture(), format_id="gen9vgc2026regi", rating=1500))
+        self.assertIsNotNone(
+            self.store.add_battle(
+                "x-1", load_fixture(), format_id="gen9vgc2026regi", rating=1500
+            )
+        )
         self.assertIsNone(self.store.add_battle("x-1", load_fixture()))
         s = self.store.summary("gen9vgc2026regi")
         self.assertEqual(s["battles"], 1)
@@ -80,7 +95,9 @@ class TestStoreAndPriors(unittest.TestCase):
 
     def test_priors(self):
         for i in range(4):
-            self.store.add_battle(f"x-{i}", load_fixture(), format_id="gen9vgc2026regi", rating=1500)
+            self.store.add_battle(
+                f"x-{i}", load_fixture(), format_id="gen9vgc2026regi", rating=1500
+            )
         pri = BattlePriors(self.store, format_id="gen9vgc2026regi", min_rating=1400)
         freqs = pri.move_frequencies("Incineroar")
         self.assertAlmostEqual(sum(freqs.values()), 1.0)
@@ -89,14 +106,18 @@ class TestStoreAndPriors(unittest.TestCase):
         # Forced (locked-in) moves are not counted as choices.
         self.assertEqual(pri.move_frequencies("Tornadus").get("Outrage"), None)
         self.assertEqual(pri.tera_types("Flutter Mane"), {"Fairy": 1.0})
-        leads = pri.best_leads(["Incineroar", "Flutter Mane", "Amoonguss", "Rillaboom"], min_games=2)
+        leads = pri.best_leads(
+            ["Incineroar", "Flutter Mane", "Amoonguss", "Rillaboom"], min_games=2
+        )
         self.assertEqual(leads[0][0], ("Flutter Mane", "Incineroar"))
         self.assertEqual(leads[0][1], 1.0)
         wr, n = pri.species_win_rate("Calyrex-Shadow")
         self.assertEqual((wr, n), (0.0, 4))
         self.assertIn(("Flutter Mane", 4), pri.common_partners("Incineroar"))
         # Rating filter excludes everything below it.
-        self.assertEqual(BattlePriors(self.store, min_rating=1600).move_frequencies("Incineroar"), {})
+        self.assertEqual(
+            BattlePriors(self.store, min_rating=1600).move_frequencies("Incineroar"), {}
+        )
 
     def test_reparse(self):
         self.store.add_battle("x-1", load_fixture())
@@ -106,7 +127,10 @@ class TestStoreAndPriors(unittest.TestCase):
     def test_local_logs(self):
         logdir = os.path.join(self.tmp.name, "battle_logs")
         os.makedirs(logdir)
-        body = "\n".join(f"[2026-11-14 10:00:00.000] (+1.000s) {l}" for l in load_fixture().splitlines())
+        body = "\n".join(
+            f"[2026-11-14 10:00:00.000] (+1.000s) {line}"
+            for line in load_fixture().splitlines()
+        )
         name = "BattleBuddy_gen9vgc2026regi-1234_20261114_100000_client_messages.log"
         with open(os.path.join(logdir, name), "w", encoding="utf-8") as f:
             f.write("=" * 60 + "\nheader\n" + body)
@@ -134,8 +158,13 @@ class _FakeSession:
         self.calls = []
         base = 2_000_000_000
         self.listing = [
-            {"id": f"gen9vgc2026regi-{i}", "uploadtime": base - i, "rating": 1200 + i,
-             "private": 1 if i == 3 else 0, "password": None}
+            {
+                "id": f"gen9vgc2026regi-{i}",
+                "uploadtime": base - i,
+                "rating": 1200 + i,
+                "private": 1 if i == 3 else 0,
+                "password": None,
+            }
             for i in range(60)
         ]
 
@@ -143,12 +172,22 @@ class _FakeSession:
         self.calls.append((url, dict(params or {})))
         if url.endswith("/search.json"):
             before = (params or {}).get("before")
-            items = [e for e in self.listing if before is None or e["uploadtime"] < before]
+            items = [
+                e for e in self.listing if before is None or e["uploadtime"] < before
+            ]
             return _FakeResp(200, items[:51])
         rid = url.rsplit("/", 1)[1][:-5]
         entry = next(e for e in self.listing if e["id"] == rid)
-        return _FakeResp(200, {"id": rid, "formatid": "gen9vgc2026regi", "log": load_fixture(),
-                               "uploadtime": entry["uploadtime"], "rating": entry["rating"]})
+        return _FakeResp(
+            200,
+            {
+                "id": rid,
+                "formatid": "gen9vgc2026regi",
+                "log": load_fixture(),
+                "uploadtime": entry["uploadtime"],
+                "rating": entry["rating"],
+            },
+        )
 
 
 class TestImporter(unittest.TestCase):
@@ -163,29 +202,45 @@ class TestImporter(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_backfill_paginates_and_skips_private(self):
-        stats = import_replays(self.store, "gen9vgc2026regi", max_pages=None, client=self.client)
+        stats = import_replays(
+            self.store, "gen9vgc2026regi", max_pages=None, client=self.client
+        )
         self.assertEqual(stats["pages"], 2)
         self.assertEqual(stats["listed"], 60)
         self.assertEqual(stats["skipped_private"], 1)
         self.assertEqual(stats["imported"], 59)
         searches = [p for u, p in self.session.calls if u.endswith("search.json")]
         self.assertEqual(searches[1]["before"], 2_000_000_000 - 49)
-        self.assertNotIn(("https://replay.pokemonshowdown.com/gen9vgc2026regi-3.json", {}), self.session.calls)
-        self.assertEqual(self.session.headers["User-Agent"].split("/")[0], "foul-play-battle-db")
+        self.assertNotIn(
+            ("https://replay.pokemonshowdown.com/gen9vgc2026regi-3.json", {}),
+            self.session.calls,
+        )
+        self.assertEqual(
+            self.session.headers["User-Agent"].split("/")[0], "foul-play-battle-db"
+        )
 
     def test_resume_and_new_mode(self):
         import_replays(self.store, "gen9vgc2026regi", max_pages=1, client=self.client)
         self.assertEqual(self.store.summary()["battles"], 49)
         # Backfill picks up where it stopped instead of re-listing page 1.
-        stats = import_replays(self.store, "gen9vgc2026regi", max_pages=None, client=self.client)
+        stats = import_replays(
+            self.store, "gen9vgc2026regi", max_pages=None, client=self.client
+        )
         self.assertEqual(stats["imported"], 10)
         # "new" mode stops at the first page once it reaches stored replays.
-        stats = import_replays(self.store, "gen9vgc2026regi", mode="new", client=self.client)
+        stats = import_replays(
+            self.store, "gen9vgc2026regi", mode="new", client=self.client
+        )
         self.assertEqual((stats["imported"], stats["pages"]), (0, 1))
 
     def test_min_rating(self):
-        stats = import_replays(self.store, "gen9vgc2026regi", max_pages=1, min_rating=1240,
-                               client=self.client)
+        stats = import_replays(
+            self.store,
+            "gen9vgc2026regi",
+            max_pages=1,
+            min_rating=1240,
+            client=self.client,
+        )
         self.assertEqual(stats["imported"], 10)
 
 

@@ -38,7 +38,9 @@ async def _main(args) -> None:
     team = Path(args.team).read_text(encoding="utf-8")
     priors = None
     if not args.no_priors:
-        priors = BattlePriors(BattleStore(args.db), format_id=args.format, min_rating=args.min_rating)
+        priors = BattlePriors(
+            BattleStore(args.db), format_id=args.format, min_rating=args.min_rating
+        )
     bot = build_player(args.name, team, args.format, priors)
 
     if args.challenge:
@@ -52,7 +54,9 @@ async def _main(args) -> None:
 
 
 def main(argv=None) -> None:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     ap.add_argument("--team", required=True, help="Team in Showdown export format")
     ap.add_argument("--format", default="gen9vgc2026regi")
     ap.add_argument("--name", default="BattleBuddyLocal")
@@ -62,7 +66,9 @@ def main(argv=None) -> None:
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--challenge", help="Local username to challenge")
     mode.add_argument("--accept", type=int, help="Accept this many challenges")
-    mode.add_argument("--self-play", type=int, help="Play N games vs the same bot without priors")
+    mode.add_argument(
+        "--self-play", type=int, help="Play N games vs the same bot without priors"
+    )
     ap.add_argument("--games", type=int, default=1)
     asyncio.run(_main(ap.parse_args(argv)))
 

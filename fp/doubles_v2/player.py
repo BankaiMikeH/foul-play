@@ -34,6 +34,7 @@ def _species_name(mon: Optional[Pokemon]) -> str:
         return ""
     try:
         from poke_env.data import GenData
+
         entry = GenData.from_gen(9).pokedex.get(mon.species)
         if entry and entry.get("name"):
             return entry["name"]
@@ -56,7 +57,9 @@ class VGCHeuristicPlayer(Player):
         if not self.priors:
             return 0.0
         try:
-            return self.priors.move_frequencies(_species_name(mon), top=50).get(move.entry.get("name", move.id), 0.0)
+            return self.priors.move_frequencies(_species_name(mon), top=50).get(
+                move.entry.get("name", move.id), 0.0
+            )
         except Exception:
             return 0.0
 
@@ -98,7 +101,9 @@ class VGCHeuristicPlayer(Player):
 
         per_slot: List[List[Tuple[float, SingleBattleOrder, dict]]] = []
         for slot, mon in enumerate(battle.active_pokemon):
-            if mon is None or not (battle.available_moves[slot] or battle.available_switches[slot]):
+            if mon is None or not (
+                battle.available_moves[slot] or battle.available_switches[slot]
+            ):
                 per_slot.append([])
                 continue
             options = self._slot_options(battle, slot, mon)
@@ -110,7 +115,9 @@ class VGCHeuristicPlayer(Player):
             if mon is not None:
                 chosen = best.first_order if slot == 0 else best.second_order
                 self._protected_last_turn[(battle.battle_tag, mon.species)] = bool(
-                    chosen and isinstance(chosen.order, Move) and chosen.order.is_protect_move
+                    chosen
+                    and isinstance(chosen.order, Move)
+                    and chosen.order.is_protect_move
                 )
         return best
 
@@ -122,16 +129,28 @@ class VGCHeuristicPlayer(Player):
         if not first or not second:
             only = first or second
             score, order, _ = max(only, key=lambda x: x[0])
-            return DoubleBattleOrder(order, None) if first else DoubleBattleOrder(None, order)
+            return (
+                DoubleBattleOrder(order, None)
+                if first
+                else DoubleBattleOrder(None, order)
+            )
 
         best, best_score = None, float("-inf")
         for s1, o1, m1 in first:
             for s2, o2, m2 in second:
                 if not DoubleBattleOrder.join_orders([o1], [o2]):
                     continue  # e.g. both terastallizing, or same switch-in
-                total = s1 + s2 + scoring.joint_adjustment(
-                    m1.get("target"), m2.get("target"), m1.get("protect", False),
-                    m2.get("protect", False), m1.get("ko", False), m2.get("ko", False),
+                total = (
+                    s1
+                    + s2
+                    + scoring.joint_adjustment(
+                        m1.get("target"),
+                        m2.get("target"),
+                        m1.get("protect", False),
+                        m2.get("protect", False),
+                        m1.get("ko", False),
+                        m2.get("ko", False),
+                    )
                 )
                 if total > best_score:
                     best, best_score = DoubleBattleOrder(o1, o2), total
@@ -147,27 +166,51 @@ class VGCHeuristicPlayer(Player):
             prior = self._move_prior(mon, move)
             if move.is_protect_move:
                 key = (battle.battle_tag, mon.species)
-                s = scoring.score_protect(mon.current_hp_fraction, threat,
-                                          self._protected_last_turn.get(key, False), prior)
+                s = scoring.score_protect(
+                    mon.current_hp_fraction,
+                    threat,
+                    self._protected_last_turn.get(key, False),
+                    prior,
+                )
                 options.append((s, SingleBattleOrder(move), {"protect": True}))
                 continue
             if move.category == MoveCategory.STATUS or move.base_power == 0:
                 for tgt in battle.get_possible_showdown_targets(move, mon):
-                    options.append((scoring.score_status(prior), SingleBattleOrder(move, move_target=tgt), {}))
+                    options.append(
+                        (
+                            scoring.score_status(prior),
+                            SingleBattleOrder(move, move_target=tgt),
+                            {},
+                        )
+                    )
                 continue
 
             for tera in self._tera_choices(battle, slot, mon, move):
                 for tgt in battle.get_possible_showdown_targets(move, mon):
-                    s, meta = self._score_attack(battle, mon, ally, foes, move, tgt, tera, prior)
-                    options.append((s, SingleBattleOrder(move, move_target=tgt, terastallize=tera), meta))
+                    s, meta = self._score_attack(
+                        battle, mon, ally, foes, move, tgt, tera, prior
+                    )
+                    options.append(
+                        (
+                            s,
+                            SingleBattleOrder(move, move_target=tgt, terastallize=tera),
+                            meta,
+                        )
+                    )
 
         for sw in battle.available_switches[slot]:
-            s = scoring.score_switch(self._defense_vs(sw, foes), self._defense_vs(mon, foes))
+            s = scoring.score_switch(
+                self._defense_vs(sw, foes), self._defense_vs(mon, foes)
+            )
             options.append((s, SingleBattleOrder(sw), {}))
         return options
 
     def _tera_choices(self, battle, slot, mon, move) -> Sequence[bool]:
-        can = battle.can_tera[slot] if isinstance(battle.can_tera, (list, tuple)) else battle.can_tera
+        can = (
+            battle.can_tera[slot]
+            if isinstance(battle.can_tera, (list, tuple))
+            else battle.can_tera
+        )
         if can and mon.tera_type is not None and mon.tera_type == move.type:
             return (False, True)
         return (False,)
@@ -180,7 +223,9 @@ class VGCHeuristicPlayer(Player):
         acc = move.accuracy if isinstance(move.accuracy, (int, float)) else 1.0
 
         if tgt in (battle.POKEMON_1_POSITION, battle.POKEMON_2_POSITION):
-            return scoring.score_ally_hit(move.base_power, ally.damage_multiplier(move) if ally else 0), {}
+            return scoring.score_ally_hit(
+                move.base_power, ally.damage_multiplier(move) if ally else 0
+            ), {}
 
         target = None
         if tgt == battle.OPPONENT_1_POSITION:
@@ -192,7 +237,9 @@ class VGCHeuristicPlayer(Player):
         other = next((f for f in foes if f is not None and f is not target), None)
 
         a = scoring.AttackInput(
-            base_power=move.base_power, accuracy=acc, stab=stab,
+            base_power=move.base_power,
+            accuracy=acc,
+            stab=stab,
             effectiveness=target.damage_multiplier(move) if target else 1.0,
             spread=spread,
             hits_ally=move.target == Target.ALL_ADJACENT and ally is not None,
@@ -201,12 +248,17 @@ class VGCHeuristicPlayer(Player):
             second_target_effectiveness=other.damage_multiplier(move) if other else 0.0,
             second_target_hp=other.current_hp_fraction if other else 1.0,
             target_protect_rate=self._protect_rate(target),
-            priority=move.priority, user_hp=mon.current_hp_fraction, prior=prior,
+            priority=move.priority,
+            user_hp=mon.current_hp_fraction,
+            prior=prior,
         )
-        dmg = scoring.expected_damage(a.base_power, a.accuracy, a.stab, a.effectiveness, a.spread)
+        dmg = scoring.expected_damage(
+            a.base_power, a.accuracy, a.stab, a.effectiveness, a.spread
+        )
         return scoring.score_attack(a), {
             "target": None if spread else tgt,
-            "ko": target is not None and scoring.likely_ko(dmg, target.current_hp_fraction),
+            "ko": target is not None
+            and scoring.likely_ko(dmg, target.current_hp_fraction),
         }
 
     # ---------------------------------------------------------- helpers
@@ -218,7 +270,12 @@ class VGCHeuristicPlayer(Player):
         for foe in foes:
             if foe is None:
                 continue
-            vals.append(max((mon.damage_multiplier(t) for t in foe.types if t is not None), default=1.0))
+            vals.append(
+                max(
+                    (mon.damage_multiplier(t) for t in foe.types if t is not None),
+                    default=1.0,
+                )
+            )
         return sum(vals) / len(vals) if vals else 1.0
 
     def _threat_to(self, mon: Pokemon, foes) -> float:
@@ -239,10 +296,15 @@ class VGCHeuristicPlayer(Player):
         for slot in (0, 1):
             if not battle.force_switch[slot]:
                 continue
-            options = [s for s in battle.available_switches[slot] if s.species not in used]
+            options = [
+                s for s in battle.available_switches[slot] if s.species not in used
+            ]
             if not options:
                 continue
-            pick = min(options, key=lambda s: (self._defense_vs(s, foes), -s.current_hp_fraction))
+            pick = min(
+                options,
+                key=lambda s: (self._defense_vs(s, foes), -s.current_hp_fraction),
+            )
             used.add(pick.species)
             chosen[slot] = SingleBattleOrder(pick)
         return DoubleBattleOrder(chosen[0], chosen[1])

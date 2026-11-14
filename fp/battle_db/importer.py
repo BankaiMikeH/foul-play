@@ -31,14 +31,21 @@ PAGE_SIZE = 50
 
 
 class ReplayClient:
-    def __init__(self, delay: float = 1.5, timeout: float = 20.0, max_retries: int = 4,
-                 session: Optional[requests.Session] = None,
-                 sleep: Callable[[float], None] = time.sleep):
+    def __init__(
+        self,
+        delay: float = 1.5,
+        timeout: float = 20.0,
+        max_retries: int = 4,
+        session: Optional[requests.Session] = None,
+        sleep: Callable[[float], None] = time.sleep,
+    ):
         self.delay = delay
         self.timeout = timeout
         self.max_retries = max_retries
         self.session = session or requests.Session()
-        self.session.headers.update({"User-Agent": USER_AGENT, "Accept": "application/json"})
+        self.session.headers.update(
+            {"User-Agent": USER_AGENT, "Accept": "application/json"}
+        )
         self._sleep = sleep
         self._last_request = 0.0
 
@@ -63,7 +70,9 @@ class ReplayClient:
                     if retry_after.isdigit():
                         self._sleep(int(retry_after))
             backoff = min(60.0, self.delay * (2 ** (attempt + 1)))
-            logger.warning("Request failed (%s) for %s; retrying in %.0fs", err, url, backoff)
+            logger.warning(
+                "Request failed (%s) for %s; retrying in %.0fs", err, url, backoff
+            )
             self._sleep(backoff)
         raise RuntimeError(f"Giving up on {url} after {self.max_retries + 1} tries")
 
@@ -76,8 +85,12 @@ class ReplayClient:
     def replay(self, replay_id: str) -> Optional[dict]:
         return self._get_json(f"{REPLAY_BASE}/{replay_id}.json")
 
-    def iter_listings(self, format_id: str, before: Optional[int] = None,
-                      max_pages: Optional[int] = None) -> Iterator[List[dict]]:
+    def iter_listings(
+        self,
+        format_id: str,
+        before: Optional[int] = None,
+        max_pages: Optional[int] = None,
+    ) -> Iterator[List[dict]]:
         """Yield pages of replay listings, newest first, walking back in time."""
         pages = 0
         while max_pages is None or pages < max_pages:
@@ -92,10 +105,15 @@ class ReplayClient:
             before = page[-1]["uploadtime"]
 
 
-def import_replays(store: BattleStore, format_id: str, max_pages: Optional[int] = 20,
-                   min_rating: int = 0, mode: str = "backfill",
-                   client: Optional[ReplayClient] = None,
-                   progress: Optional[Callable[[str], None]] = None) -> dict:
+def import_replays(
+    store: BattleStore,
+    format_id: str,
+    max_pages: Optional[int] = 20,
+    min_rating: int = 0,
+    mode: str = "backfill",
+    client: Optional[ReplayClient] = None,
+    progress: Optional[Callable[[str], None]] = None,
+) -> dict:
     """Import replays for one format.
 
     mode="new":      start from the newest replays and stop at ones already stored.
@@ -103,8 +121,15 @@ def import_replays(store: BattleStore, format_id: str, max_pages: Optional[int] 
     """
     client = client or ReplayClient()
     say = progress or (lambda msg: logger.info(msg))
-    stats = {"listed": 0, "imported": 0, "skipped_existing": 0, "skipped_rating": 0,
-             "skipped_private": 0, "failed": 0, "pages": 0}
+    stats = {
+        "listed": 0,
+        "imported": 0,
+        "skipped_existing": 0,
+        "skipped_rating": 0,
+        "skipped_private": 0,
+        "failed": 0,
+        "pages": 0,
+    }
 
     before = None
     if mode == "backfill":
@@ -136,7 +161,9 @@ def import_replays(store: BattleStore, format_id: str, max_pages: Optional[int] 
                     stats["failed"] += 1
                     continue
                 store.add_battle(
-                    rid, data["log"], source="showdown_replay",
+                    rid,
+                    data["log"],
+                    source="showdown_replay",
                     format_id=data.get("formatid") or format_id,
                     uploadtime=data.get("uploadtime") or entry.get("uploadtime"),
                     rating=data.get("rating") or entry.get("rating"),
@@ -146,8 +173,10 @@ def import_replays(store: BattleStore, format_id: str, max_pages: Optional[int] 
                 logger.warning("Could not import %s: %s", rid, e)
                 stats["failed"] += 1
         store.update_import_state(format_id, [e.get("uploadtime") for e in page])
-        say(f"page {stats['pages']}: imported {stats['imported']} so far "
-            f"({stats['skipped_existing']} already stored)")
+        say(
+            f"page {stats['pages']}: imported {stats['imported']} so far "
+            f"({stats['skipped_existing']} already stored)"
+        )
         if mode == "new" and hit_known:
             break
     return stats

@@ -103,7 +103,9 @@ class _State:
         self.seq = 0
         self.seen_actions: set = set()
 
-    def species_at(self, side: Optional[str], slot: Optional[str], nickname: str) -> Optional[str]:
+    def species_at(
+        self, side: Optional[str], slot: Optional[str], nickname: str
+    ) -> Optional[str]:
         if side is None:
             return None
         if slot and (side, slot) in self.active:
@@ -113,8 +115,14 @@ class _State:
     def add(self, action: Action):
         # Two bots logging the same battle can send each line twice; keep one.
         key = (
-            action.turn, action.side, action.slot, action.kind, action.name,
-            action.target_side, action.target_slot, action.actor,
+            action.turn,
+            action.side,
+            action.slot,
+            action.kind,
+            action.name,
+            action.target_side,
+            action.target_slot,
+            action.actor,
         )
         if action.kind != "move" and key in self.seen_actions:
             return
@@ -203,7 +211,16 @@ def _handle(cmd: str, parts: List[str], st: _State) -> None:
         else:
             kind = "switch"
         st.fainted_slots.discard((side, slot))
-        st.add(Action(turn=st.turn, side=side, slot=slot, actor=species, kind=kind, name=species))
+        st.add(
+            Action(
+                turn=st.turn,
+                side=side,
+                slot=slot,
+                actor=species,
+                kind=kind,
+                name=species,
+            )
+        )
 
     elif cmd == "detailschange" and len(parts) >= 4:
         side, slot, nickname = parse_position(parts[2])
@@ -228,11 +245,21 @@ def _handle(cmd: str, parts: List[str], st: _State) -> None:
             tags = tags[1:]
         spread = any(t.startswith("[spread]") for t in tags)
         forced = any(t.startswith("[from]") for t in tags)
-        st.add(Action(
-            turn=st.turn, side=side, slot=slot, actor=actor, kind="move", name=move,
-            target_side=t_side, target_slot=t_slot, target_species=t_species,
-            spread=spread, forced=forced,
-        ))
+        st.add(
+            Action(
+                turn=st.turn,
+                side=side,
+                slot=slot,
+                actor=actor,
+                kind="move",
+                name=move,
+                target_side=t_side,
+                target_slot=t_slot,
+                target_species=t_species,
+                spread=spread,
+                forced=forced,
+            )
+        )
 
     elif cmd == "-terastallize" and len(parts) >= 4:
         side, slot, nickname = parse_position(parts[2])
@@ -242,14 +269,27 @@ def _handle(cmd: str, parts: List[str], st: _State) -> None:
         tera = parts[3].strip()
         member = b.team(side).setdefault(actor, TeamMember(species=actor, brought=True))
         member.tera_type = tera
-        st.add(Action(turn=st.turn, side=side, slot=slot, actor=actor, kind="tera", name=tera))
+        st.add(
+            Action(
+                turn=st.turn, side=side, slot=slot, actor=actor, kind="tera", name=tera
+            )
+        )
 
     elif cmd == "cant" and len(parts) >= 4:
         side, slot, nickname = parse_position(parts[2])
         if side is None:
             return
         actor = st.species_at(side, slot, nickname) or nickname
-        st.add(Action(turn=st.turn, side=side, slot=slot, actor=actor, kind="cant", name=parts[3]))
+        st.add(
+            Action(
+                turn=st.turn,
+                side=side,
+                slot=slot,
+                actor=actor,
+                kind="cant",
+                name=parts[3],
+            )
+        )
 
     elif cmd == "faint" and len(parts) >= 3:
         side, slot, nickname = parse_position(parts[2])

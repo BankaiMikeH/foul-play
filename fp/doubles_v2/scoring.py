@@ -29,22 +29,24 @@ FULL_HP_POINTS = 250.0
 @dataclass
 class AttackInput:
     base_power: float
-    accuracy: float = 1.0          # 0..1
-    stab: float = 1.0              # 1.0, 1.5 or 2.0 (tera STAB)
-    effectiveness: float = 1.0     # vs the chosen target
-    spread: bool = False           # hits both foes
-    hits_ally: bool = False        # e.g. Earthquake
+    accuracy: float = 1.0  # 0..1
+    stab: float = 1.0  # 1.0, 1.5 or 2.0 (tera STAB)
+    effectiveness: float = 1.0  # vs the chosen target
+    spread: bool = False  # hits both foes
+    hits_ally: bool = False  # e.g. Earthquake
     ally_effectiveness: float = 0.0
-    target_hp: float = 1.0         # 0..1 of the target's HP
+    target_hp: float = 1.0  # 0..1 of the target's HP
     second_target_effectiveness: float = 0.0  # spread: the other foe
     second_target_hp: float = 1.0
     target_protect_rate: float = 0.0  # how often this species Protects (DB prior)
     priority: int = 0
     user_hp: float = 1.0
-    prior: float = 0.0             # share of DB choices that were this move
+    prior: float = 0.0  # share of DB choices that were this move
 
 
-def expected_damage(power: float, accuracy: float, stab: float, eff: float, spread: bool) -> float:
+def expected_damage(
+    power: float, accuracy: float, stab: float, eff: float, spread: bool
+) -> float:
     if power <= 0 or eff <= 0:
         return 0.0
     dmg = power * accuracy * stab * eff
@@ -64,14 +66,17 @@ def score_attack(a: AttackInput) -> float:
     main = expected_damage(a.base_power, a.accuracy, a.stab, a.effectiveness, a.spread)
     score = main + _ko_bonus(main, a.target_hp)
     if a.spread:
-        second = expected_damage(a.base_power, a.accuracy, a.stab,
-                                 a.second_target_effectiveness, True)
+        second = expected_damage(
+            a.base_power, a.accuracy, a.stab, a.second_target_effectiveness, True
+        )
         score += second + _ko_bonus(second, a.second_target_hp)
     # A target that Protects a lot wastes single-target hits more than spread.
     protect_tax = a.target_protect_rate * (0.25 if a.spread else 0.5)
     score *= 1.0 - protect_tax
     if a.hits_ally and a.ally_effectiveness > 0:
-        ally_dmg = expected_damage(a.base_power, a.accuracy, a.stab, a.ally_effectiveness, True)
+        ally_dmg = expected_damage(
+            a.base_power, a.accuracy, a.stab, a.ally_effectiveness, True
+        )
         score -= 1.5 * ally_dmg
     # Priority matters most when the user is low and might not move otherwise.
     if a.priority > 0 and a.user_hp < 0.4:
@@ -86,8 +91,9 @@ def score_ally_hit(base_power: float, effectiveness: float) -> float:
     return -5.0
 
 
-def score_protect(user_hp: float, threat: float, protected_last_turn: bool,
-                  prior: float = 0.0) -> float:
+def score_protect(
+    user_hp: float, threat: float, protected_last_turn: bool, prior: float = 0.0
+) -> float:
     """``threat`` is the best expected damage a foe can do to this Pokemon (0..~300)."""
     if protected_last_turn:
         return -200.0  # consecutive Protect usually fails
@@ -112,17 +118,29 @@ def score_switch(incoming_defense: float, outgoing_threat_taken: float) -> float
     return 25.0 * gain - 10.0  # switching costs tempo
 
 
-def joint_adjustment(first_target: Optional[int], second_target: Optional[int],
-                     first_is_protect: bool, second_is_protect: bool,
-                     first_ko_target: bool, second_ko_target: bool) -> float:
+def joint_adjustment(
+    first_target: Optional[int],
+    second_target: Optional[int],
+    first_is_protect: bool,
+    second_is_protect: bool,
+    first_ko_target: bool,
+    second_ko_target: bool,
+) -> float:
     """Penalties/bonuses for how the two slots' choices combine."""
     adj = 0.0
     if first_is_protect and second_is_protect:
         adj -= 40.0  # passing the whole turn
-    if (first_target is not None and first_target == second_target
-            and first_ko_target and second_ko_target):
+    if (
+        first_target is not None
+        and first_target == second_target
+        and first_ko_target
+        and second_ko_target
+    ):
         adj -= 50.0  # both going for a KO only one needs
-    if (first_target is not None and first_target == second_target
-            and not (first_ko_target or second_ko_target)):
+    if (
+        first_target is not None
+        and first_target == second_target
+        and not (first_ko_target or second_ko_target)
+    ):
         adj += 10.0  # focus fire on something that needs two hits
     return adj

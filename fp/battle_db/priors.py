@@ -19,8 +19,13 @@ class BattlePriors:
     bot can learn from stronger players only.
     """
 
-    def __init__(self, store: Optional[BattleStore] = None, db_path: Optional[str] = None,
-                 format_id: Optional[str] = None, min_rating: int = 0):
+    def __init__(
+        self,
+        store: Optional[BattleStore] = None,
+        db_path: Optional[str] = None,
+        format_id: Optional[str] = None,
+        min_rating: int = 0,
+    ):
         self.store = store or BattleStore(db_path)
         self.format_id = format_id
         self.min_rating = min_rating
@@ -47,7 +52,9 @@ class BattlePriors:
         total = sum(r["n"] for r in rows) or 1
         return {r["move"]: r["n"] / total for r in rows[:top]}
 
-    def move_win_rates(self, species: str, min_uses: int = 5) -> Dict[str, Tuple[float, int]]:
+    def move_win_rates(
+        self, species: str, min_uses: int = 5
+    ) -> Dict[str, Tuple[float, int]]:
         """move -> (win rate of the side that chose it, uses)."""
         where, args = self._filter()
         rows = self.store.conn.execute(
@@ -86,8 +93,9 @@ class BattlePriors:
 
     # -------------------------------------------------------- team preview
 
-    def best_leads(self, team: Sequence[str], min_games: int = 3, top: int = 5
-                   ) -> List[Tuple[Tuple[str, str], float, int]]:
+    def best_leads(
+        self, team: Sequence[str], min_games: int = 3, top: int = 5
+    ) -> List[Tuple[Tuple[str, str], float, int]]:
         """Rank lead pairs from ``team`` by how often that lead won."""
         team_set = set(team)
         where, args = self._filter()
@@ -130,7 +138,16 @@ class BattlePriors:
         return [(r["species"], r["n"], r["wr"]) for r in rows]
 
 
-PROTECT_MOVES = frozenset({
-    "Protect", "Detect", "Spiky Shield", "King's Shield", "Baneful Bunker",
-    "Silk Trap", "Burning Bulwark", "Obstruct", "Max Guard",
-})
+PROTECT_MOVES = frozenset(
+    {
+        "Protect",
+        "Detect",
+        "Spiky Shield",
+        "King's Shield",
+        "Baneful Bunker",
+        "Silk Trap",
+        "Burning Bulwark",
+        "Obstruct",
+        "Max Guard",
+    }
+)

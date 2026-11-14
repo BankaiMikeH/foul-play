@@ -152,7 +152,9 @@ class BattleStore:
         if self.has_battle(replay_id):
             if not replace:
                 return None
-            self.conn.execute("DELETE FROM replay_battles WHERE replay_id = ?", (replay_id,))
+            self.conn.execute(
+                "DELETE FROM replay_battles WHERE replay_id = ?", (replay_id,)
+            )
 
         parsed = parse_log(log_text)
         fmt = format_id or parsed.format_id
@@ -163,10 +165,19 @@ class BattleStore:
                 winner_side, tie, turns, parser_version, imported_at)
                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
-                replay_id, source, fmt, uploadtime, rating,
-                parsed.players.get("p1"), parsed.players.get("p2"),
-                parsed.ratings.get("p1"), parsed.ratings.get("p2"),
-                parsed.winner_side, int(parsed.tie), parsed.turns, PARSER_VERSION,
+                replay_id,
+                source,
+                fmt,
+                uploadtime,
+                rating,
+                parsed.players.get("p1"),
+                parsed.players.get("p2"),
+                parsed.ratings.get("p1"),
+                parsed.ratings.get("p2"),
+                parsed.winner_side,
+                int(parsed.tie),
+                parsed.turns,
+                PARSER_VERSION,
                 datetime.now(timezone.utc).isoformat(timespec="seconds"),
             ),
         )
@@ -179,7 +190,15 @@ class BattleStore:
                (replay_id, side, species, brought, lead, tera_type, fainted)
                VALUES (?,?,?,?,?,?,?)""",
             [
-                (replay_id, side, m.species, int(m.brought), int(m.lead), m.tera_type, int(m.fainted))
+                (
+                    replay_id,
+                    side,
+                    m.species,
+                    int(m.brought),
+                    int(m.lead),
+                    m.tera_type,
+                    int(m.fainted),
+                )
                 for side, members in parsed.teams.items()
                 for m in members.values()
             ],
@@ -190,8 +209,21 @@ class BattleStore:
                 target_side, target_slot, target_species, spread, forced)
                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             [
-                (replay_id, a.seq, a.turn, a.side, a.slot, a.actor, a.kind, a.name,
-                 a.target_side, a.target_slot, a.target_species, int(a.spread), int(a.forced))
+                (
+                    replay_id,
+                    a.seq,
+                    a.turn,
+                    a.side,
+                    a.slot,
+                    a.actor,
+                    a.kind,
+                    a.name,
+                    a.target_side,
+                    a.target_slot,
+                    a.target_species,
+                    int(a.spread),
+                    int(a.forced),
+                )
                 for a in parsed.actions
             ],
         )
@@ -206,8 +238,15 @@ class BattleStore:
         ).fetchall()
         for r in rows:
             log_text = zlib.decompress(r["log_zlib"]).decode("utf-8")
-            self.add_battle(r["replay_id"], log_text, r["source"], r["format"],
-                            r["uploadtime"], r["rating"], replace=True)
+            self.add_battle(
+                r["replay_id"],
+                log_text,
+                r["source"],
+                r["format"],
+                r["uploadtime"],
+                r["rating"],
+                replace=True,
+            )
         return len(rows)
 
     # ------------------------------------------------------------ import state
@@ -233,7 +272,12 @@ class BattleStore:
                  oldest_seen = excluded.oldest_seen,
                  newest_seen = excluded.newest_seen,
                  updated_at = excluded.updated_at""",
-            (format_id, oldest, newest, datetime.now(timezone.utc).isoformat(timespec="seconds")),
+            (
+                format_id,
+                oldest,
+                newest,
+                datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            ),
         )
         self.conn.commit()
 

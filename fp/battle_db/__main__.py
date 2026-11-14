@@ -23,18 +23,34 @@ DEFAULT_FORMAT = "gen9vgc2026regi"
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(prog="python -m fp.battle_db", description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        prog="python -m fp.battle_db",
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     ap.add_argument("--db", help="SQLite file (default: fp/data/battles.db)")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    imp = sub.add_parser("import", help="Pull public replays from Showdown's replay site")
+    imp = sub.add_parser(
+        "import", help="Pull public replays from Showdown's replay site"
+    )
     imp.add_argument("--format", default=DEFAULT_FORMAT)
-    imp.add_argument("--pages", type=int, default=20, help="Search pages (50 replays each); 0 = no limit")
+    imp.add_argument(
+        "--pages",
+        type=int,
+        default=20,
+        help="Search pages (50 replays each); 0 = no limit",
+    )
     imp.add_argument("--min-rating", type=int, default=0)
-    imp.add_argument("--mode", choices=["backfill", "new"], default="backfill",
-                     help="backfill = keep going further back; new = grab what's new since last run")
-    imp.add_argument("--delay", type=float, default=1.5, help="Seconds between requests (min 1.0)")
+    imp.add_argument(
+        "--mode",
+        choices=["backfill", "new"],
+        default="backfill",
+        help="backfill = keep going further back; new = grab what's new since last run",
+    )
+    imp.add_argument(
+        "--delay", type=float, default=1.5, help="Seconds between requests (min 1.0)"
+    )
 
     loc = sub.add_parser("local", help="Load the bot's own battle_logs")
     loc.add_argument("log_dir", nargs="?", default="battle_logs")
@@ -57,9 +73,15 @@ def main(argv=None) -> int:
 
     if args.cmd == "import":
         client = ReplayClient(delay=max(1.0, args.delay))
-        stats = import_replays(store, args.format, max_pages=args.pages or None,
-                               min_rating=args.min_rating, mode=args.mode, client=client,
-                               progress=print)
+        stats = import_replays(
+            store,
+            args.format,
+            max_pages=args.pages or None,
+            min_rating=args.min_rating,
+            mode=args.mode,
+            client=client,
+            progress=print,
+        )
         print("Done:", stats)
         print("Database:", store.summary(args.format))
     elif args.cmd == "local":
@@ -72,8 +94,15 @@ def main(argv=None) -> int:
     elif args.cmd == "species":
         pri = BattlePriors(store, format_id=args.format, min_rating=args.min_rating)
         wr, n = pri.species_win_rate(args.species)
-        print(f"{args.species}: brought {n} times, win rate {wr:.0%}" if n else f"{args.species}: no games")
-        print("Moves:", {k: f"{v:.0%}" for k, v in pri.move_frequencies(args.species).items()})
+        print(
+            f"{args.species}: brought {n} times, win rate {wr:.0%}"
+            if n
+            else f"{args.species}: no games"
+        )
+        print(
+            "Moves:",
+            {k: f"{v:.0%}" for k, v in pri.move_frequencies(args.species).items()},
+        )
         print("Tera:", {k: f"{v:.0%}" for k, v in pri.tera_types(args.species).items()})
         print("Partners:", pri.common_partners(args.species))
         print(f"Protect rate: {pri.protect_rate(args.species):.0%}")

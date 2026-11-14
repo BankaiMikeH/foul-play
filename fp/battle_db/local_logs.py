@@ -15,7 +15,9 @@ from typing import Optional
 
 from .store import BattleStore
 
-_NAME_RE = re.compile(r"^(?P<bot>.+?)_(?P<battle>[a-z0-9]+-\d+)_(?P<ts>\d{8}_\d{6})_client_messages\.log$")
+_NAME_RE = re.compile(
+    r"^(?P<bot>.+?)_(?P<battle>[a-z0-9]+-\d+)_(?P<ts>\d{8}_\d{6})_client_messages\.log$"
+)
 
 
 def import_local_logs(store: BattleStore, log_dir: str, replace: bool = False) -> dict:
@@ -30,8 +32,13 @@ def import_local_logs(store: BattleStore, log_dir: str, replace: bool = False) -
             stats["skipped_existing"] += 1
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        parsed = store.add_battle(replay_id, text, source="local_log",
-                                  format_id=_format_from_id(battle_id), replace=replace)
+        parsed = store.add_battle(
+            replay_id,
+            text,
+            source="local_log",
+            format_id=_format_from_id(battle_id),
+            replace=replace,
+        )
         if parsed is None:
             continue
         stats["imported"] += 1
