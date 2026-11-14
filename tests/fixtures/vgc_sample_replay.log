@@ -1,0 +1,83 @@
+|j|☆Alpha
+|j|☆Bravo
+|gametype|doubles
+|player|p1|Alpha|1|1510
+|player|p2|Bravo|2|1488
+|teamsize|p1|6
+|teamsize|p2|6
+|gen|9
+|tier|[Gen 9] VGC 2026 Reg I
+|rated|
+|rule|Species Clause: Limit one of each Pokémon
+|clearpoke
+|poke|p1|Incineroar, L50, M|
+|poke|p1|Flutter Mane, L50|
+|poke|p1|Urshifu-*, L50, F|
+|poke|p1|Amoonguss, L50, M|
+|poke|p1|Landorus-Therian, L50, M|
+|poke|p1|Rillaboom, L50, M|
+|poke|p2|Calyrex-Shadow, L50|
+|poke|p2|Tornadus, L50, M|
+|poke|p2|Zamazenta, L50|
+|poke|p2|Ogerpon-Hearthflame, L50, F|
+|poke|p2|Farigiraf, L50, F|
+|poke|p2|Chien-Pao, L50|
+|teampreview|4
+|
+|start
+|switch|p1a: Incineroar|Incineroar, L50, M|100/100
+|switch|p1b: Flutter|Flutter Mane, L50|100/100
+|switch|p2a: Calyrex|Calyrex-Shadow, L50|100/100
+|switch|p2b: Tornadus|Tornadus, L50, M|100/100
+|-ability|p1a: Incineroar|Intimidate|boost
+|turn|1
+|
+|move|p2b: Tornadus|Tailwind|p2b: Tornadus
+|move|p1a: Incineroar|Fake Out|p2a: Calyrex
+|-immune|p2a: Calyrex
+|-terastallize|p1b: Flutter|Fairy
+|move|p1b: Flutter|Moonblast|p2a: Calyrex
+|-damage|p2a: Calyrex|40/100
+|move|p2a: Calyrex|Astral Barrage|p1b: Flutter|[spread] p1a,p1b
+|-damage|p1a: Incineroar|70/100
+|-damage|p1b: Flutter|0 fnt
+|faint|p1b: Flutter
+|upkeep
+|
+|switch|p1b: Urshifu|Urshifu-Rapid-Strike, L50, F|100/100
+|turn|2
+|
+|move|p1a: Incineroar|Protect|p1a: Incineroar
+|-singleturn|p1a: Incineroar|Protect
+|move|p1b: Urshifu|Surging Strikes|p2a: Calyrex
+|-damage|p2a: Calyrex|0 fnt
+|faint|p2a: Calyrex
+|move|p2b: Tornadus|Bleakwind Storm|p1a: Incineroar|[spread] p1a,p1b
+|-activate|p1a: Incineroar|move: Protect
+|-damage|p1b: Urshifu|60/100
+|upkeep
+|
+|switch|p2a: Zamazenta|Zamazenta, L50|100/100
+|turn|3
+|
+|switch|p1a: Amoonguss|Amoonguss, L50, M|100/100
+|move|p1b: Urshifu|Close Combat|p2a: Zamazenta
+|-damage|p2a: Zamazenta|35/100
+|move|p2a: Zamazenta|Body Press|p1b: Urshifu
+|-damage|p1b: Urshifu|0 fnt
+|faint|p1b: Urshifu
+|move|p2b: Tornadus|Protect||[still]
+|-fail|p2b: Tornadus
+|upkeep
+|
+|switch|p1b: Incineroar|Incineroar, L50, M|70/100
+|turn|4
+|
+|move|p1b: Incineroar|Flare Blitz|p2a: Zamazenta
+|-damage|p2a: Zamazenta|0 fnt
+|faint|p2a: Zamazenta
+|move|p1a: Amoonguss|Spore|p2b: Tornadus
+|move|p2b: Tornadus|Outrage|p1a: Amoonguss|[from]lockedmove
+|-damage|p1a: Amoonguss|20/100
+|
+|win|Alpha

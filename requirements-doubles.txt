@@ -1,0 +1,5 @@
+# VGC doubles rebuild (fp/doubles_v2). Install into its OWN virtualenv:
+# poke-env pins websockets==15.0.1, while the main bot pins websockets==14.1.
+#   python -m venv .venv-doubles && .venv-doubles/bin/pip install -r requirements-doubles.txt
+poke-env==0.10.0
+requests>=2.32.3
